@@ -49,7 +49,7 @@ While I ran my own game, I met some unexpected circumstances. Therefore, I list 
 
 # Game Flow Chart
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/flow.png" width="250"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/flow.png"/>
 </p>
 This figure shows all the processes of the game in detail, including the collision re-sults, score updates and characters movements, etc. In this process, each time computer needs to get order from I/O and determine the collision judgment whether is satisfied or not, and then, refresh the canvas and update the scores.<br>
 If you’re unfamiliar with this process, you can see my game screen recorder in YouTube:<br>
