@@ -1,8 +1,27 @@
+Table of Contents
+=================
+
+   * [Introduction](#introduction)
+      * [Restatement](#restatement)
+         * [Game Regulations](#game-regulations)
+         * [Assumption](#assumption)
+   * [Game Flow Chart](#game-flow-chart)
+   * [Function Implementations](#function-implementations)
+      * [Start Menu](#start-menu)
+      * [Display Roles](#display-roles)
+      * [Enemies movement](#enemies-movement)
+      * [Master Movement](#master-movement)
+      * [Menu Operation](#menu-operation)
+      * [Collision Problem](#collision-problem)
+      * [Canvas Refreshment](#canvas-refreshment)
+      
 # Atari Centipede Game By C
 
 [![LICENSE](https://img.shields.io/cocoapods/l/AFNetworking.svg)](https://github.com/Hephaest/AtariCentipedeGame/blob/master/LICENSE)
 [![OS](https://img.shields.io/badge/OS-Ubuntu16.04-lightgrey.svg)](http://releases.ubuntu.com/16.04/)
 [![Library](https://img.shields.io/badge/implementation-ncurses-blue.svg)](http://www.tldp.org/HOWTO/NCURSES-Programming-HOWTO/)
+
+[中文介绍](README_CN.md) | English Introduction
 
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "800"/>
