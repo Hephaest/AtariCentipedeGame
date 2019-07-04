@@ -262,6 +262,7 @@ The running result of above codes is shown as follows.
 ## Display Roles
 
 **Mushrooms** are placed in random but their initial positions cannot be the same as master and centipede, I use for loop to create new random position of mushroom in case of duplication.
+
 ```C
 /*
  * Produce mushroom
@@ -289,7 +290,9 @@ void MushroomProduce(int y, int x)
     for(int i = 0; i < mushLength; i++) mushroom[i].mush_record=4;
 }
 ```
+
 **Master** is placed in the bottom but center by using `getmaxyx()` function to store it.
+
 ```C
 /*
  * Produce master (player)
@@ -321,7 +324,9 @@ void MasterProduce(WINDOW *win)
     mvwprintw(win, master_3_y, master_3_x + 2, "-");
 }
 ```
+
 **Centipede** is placed in the top but center by using `getmaxyx()` function and I assigned `positions(x,y)` from the tail to the head.
+
 ```C
 /*
  * Produce centipede
@@ -362,6 +367,7 @@ void CentipedeProduce(int x)
 }
 ```
 In terms of spiders and sea monsters, however, I don’t want to see them always appear in the same position, so I use variable `num` to decide whether they appears from the left or right of the wall. In addition, I used another random numbers to decide whether to let them appear (see below codes).
+
 ```C
 /*
  * Produce sea monster
@@ -425,7 +431,9 @@ void SpiderProduce(int y, int x)
     }
 }
 ```
+
 Random function:
+
 ```C
  /* While centipedes move, sea monster and spider also have chances to move by random chances */
     srand(time(NULL));
@@ -434,14 +442,18 @@ Random function:
     int ran_spider = rand() % 5;
     if(ran_spider == 1) spider_appear = 1;
 ```
+
 ## Enemies movement
 These enemies are sea monster, spider and centipede. The first two of them are simpler than the last one.
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/sea_monster.png" width = "250"><span style="display:block;">&emsp;&emsp;&emsp;&emsp;</span><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/spider.png" width = "250"></p>
+
 As figures shown, sea monster walks horizontally, later if it hits the wall, com-puter will give a default position for it and make it disappear in the canvas. And spider walks at will and we can’t find any rule. However, I could achieve more complex trajectory than the ***Atari Centipede*** by using 2 ran-dom numbers on both x and y direction. This might causes spider walks the same path (see below) but it will finally walk from one side to another side because random x and y are non-negative number.
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/trace.png" width = "300"/>
 </p>
+
 Besides, I give spider x and y boundaries conditions in order that it will never hit its partner-sea monster. In addition, I set a switch to delay the walk speed of spider (not in following code) and make it start from left to right and then from right to left by turns.
+
 ```C
 /* Sea monster movement
  * This function is used to make sea monster move in line
@@ -495,13 +507,17 @@ void SpiderMove(int x,int y)
     }
 }
 ```
+
 As for centipede, it is the most complex case in my game. All special cases I could image are listed in below. The major method I use is struct and fixed array. Array is thought to be stupid than linked list but I think it is helpful in collision because I could record each node’s situation. Then each time in movement, I only deal with the issue of their heads, later make their bod-ies follow their head by assigning previous node’s positions. Finally, repaint the canvas. Specific operations you could see in following source code.
+
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitMush.png" width = "350"/>
 </p>
+
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitWall.png" width = "350"/>
 </p>
+
 ```C
 /*
  * This function is used to decide where each component of centipede should reach.
