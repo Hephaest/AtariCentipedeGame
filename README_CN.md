@@ -10,46 +10,47 @@
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "800"/>
 </p>
-这是一个用C语言实现的《飞天蜈蚣》的“复刻”，由于Linux操作系统下的图形库不够绘制绚丽的画面，因此在本程序中仅用**简单的符号**来代表不同的游戏角色.<br/>
-希望阁下喜欢这个版本的飞天蜈蚣，如有任何疑问或建议欢迎在 **issue** 处留言. :)<br/>
-建议阁下最好通读本介绍后再运行`magic.c`程序.<br/>
-You can see the original demonstration in here: https://www.youtube.com/watch?v=dxoK8hosHjA&t=1s!<br/>
 
-# Introduction
-**ATTENTIONS**: This game requires `ncurses` library, which only could be used in Unix OS. Before I start, I suggest you to install this library by the following command in Debian/Ubuntu Linux:
+这是一个用C语言实现的《飞天蜈蚣》的“复刻”，由于Linux操作系统下的图形库不够绘制绚丽的画面，因此在本程序中仅用**简单的符号**来代表不同的游戏角色.<br/>
+希望您喜欢这个版本的飞天蜈蚣，如有任何疑问或建议欢迎在 **issue** 处留言. :)<br/>
+建议您最好通读本介绍后再运行`magic.c`程序.<br/>
+访问本油管链接可以观看完整的演示视频: https://www.youtube.com/watch?v=dxoK8hosHjA&t=1s!<br/>
+
+# 基本介绍
+**注意**: 本程序需要引入 `ncurses` 库, 这个库只存在于 Unix 的操作系统. 在开始运行之前,建议您通过以下 Debian/Ubuntu Linux 的命令行安装需要的库:
 ```C
 sudo apt−get install libncurses5−dev libncursesw5−dev
 //libncurses5−dev : Developer's libraries for ncurses
 //libncursesw5−dev : Developer's libraries for ncursesw
 ```
-## Restatement
-Based on the arcade original, I rewrite the rules of my own game. In order to make my game more stable, clear and smooth, I make some essential assumptions.
+## 问题重申
+基于原始的雅达利游戏, 我重写了部分规则. 为了使我的程序画面更加稳定和流程，我做了以下必要的前提条件.
 ### Game Regulations
-**For master**<br>
-I call the player as ’Master’, Master could turn left, right, up and down by direction key. In addition, if player wants to fire a bullet, press space key can easily make it work. Just remember master only has 4 lives, be careful!<br>
+**用户**<br>
+用户可以上下左右移动. 除此之外, 用户单击空格键即可发射子弹. 记住!您只有四次死亡的机会！<br>
 
-**For mushroom**<br>
-It is the main obstacle for players to move and fire. Mushrooms can be destroyed after taking four shots or eating by spider.<br>
+**蘑菇**<br>
+蘑菇是游戏中最主要的障碍物. 蜘蛛有可能会吃掉蘑菇，初次情况之外，如果用户想消灭蘑菇需要耗费4枚子弹(我们提供无限量子弹:)).<br>
 
-**For spider**<br>
-It is one kind of the headstrong guy in this game. It could either move up or down or move around. The moving tracks are similar to ’W’ and ’I’. In addition, it is also some people tern a ’frienemy’- If it hits mushroom, mushroom will be destroyed. Conversely, master will die once spider hits him. For the sake of security, I strongly advise players to avoid it unless they could shoot it.<br>
+**蜘蛛**<br>
+蜘蛛是游戏里最一意孤行的角色. 它可以沿着左边或右边上下移动. 蜘蛛移动的轨迹类似于'W’ 或 ‘I’. 除此之外, 它扮演着亦敌亦友的角色 - 如果它碰到蘑菇那蘑菇就会消失. 相反的,如果它碰到用户用户会失去一条生命. 为了安全起见, 您最好远离这些蜘蛛除非您有信心能击中它们.<br>
 
-**For sea monster**<br>
-In Atari Centipede, it has scorpion. But here, I have sea monster because I think it is cool. It is another headstrong guy in this game. Compared to spider, it is totally a bad guy who is always loafing around horizontally and doing nothing but hitting master and making it die.<br>
+**蝎子**<br>
+蝎子是游戏里另一个一意孤行的角色. 相比于蜘蛛, 它就完全是个坏蛋, 它虽然只能向左或向右走但是一旦它碰到用户用户就会失去一条生命.<br>
 
-**For centipede**<br>
-It is the major target of players. If nothing happens, centipede just walks line by line. Every time player shoots the centipede, the shot segment becomes a mush-room. Then if the shot segment is no in the tail or the body centipede only leaves, the centipede will split into two, gain a new head and both descend towards the player but ascend towards the player if it is in the floor. Besides, if centipede hits the wall or mushroom, it will try to turn back and descend towards the player if no other mushroom and centipede in where it will descend. Keep yourself away from centipede in case of hitting, which gonna takes you life!<br>
+**蜈蚣**<br>
+蜈蚣是用户最主要要消灭的敌人. 如果没有任何障碍物, 蜈蚣只会一行接着一行地往下走.每次用户击中蜈蚣的部位都会变成一个蘑菇. 如果击中的部位既不在头也不在尾, 蜈蚣就会自己撕裂成两部分, 获得新的头部并向上或向下接近用户. 除此之外, 如果蜈蚣遇到蘑菇或者墙壁时, 它会拐弯下移. 尽量让自己远离蜈蚣，如果被它碰到的话也会失去生命哦!<br>
 
-To make the above game regulations easier to understand, I created a table as follows:
+为了让上述规则更易懂, 我创建了如下关系表格:
 
-|       Hit       |                       Master                       |                        bullets                         |                           Mushroom                           |       Centipede        |
+|       撞击关系       |                       用户                       |                        子弹                         |                           蘑菇                           |       蜈蚣        |
 | :-------------: | :------------------------------------------------: | :----------------------------------------------------: | :----------------------------------------------------------: | :--------------------: |
-|   **Spider**    |             Master die, lose one life              |               Spider die, win 600 points               |      Mushroom die, the number of mushroom decreases one      |         Ignore         |
-| **Sea monster** |             Master die, lose one life              |            Sea monster die, win 600 points             |                            Ignore                            |         Ignore         |
-|  **Centipede**  |             Master die, lose one life              | win 100 points if hitting its head, else win 10 points | turn back and descend If no other mushrooms under centipede, else if its head is between mushroom and wall, just descend.  Centipede turns back in other cases. | One of them turns back |
-|  **Mushroom**   | Mushroom die, the number of mushroom decreases one |                    4 hits = 1 point                    |                            Ignore                            |  No kind of this case  |
+|   **蜘蛛r**    |             用户死亡, 失误一次生命              |               蜘蛛死亡, 获得600分               |      蘑菇消失, 蘑菇总数 - 1      |         不考虑         |
+| **蝎子** |             用户死亡, 失误一次生命              |            蝎子死亡, 获得600分             |                            Ignore                            |         不考虑         |
+|  **蜈蚣**  |             用户死亡, 失误一次生命              | 击中头部给100分，其余情况给10分 | 蜈蚣掉头 | 其中一只蜈蚣掉头 |
+|  **蘑菇**   | 蘑菇消失, 蘑菇总数 - 1 |                    4 次成功射击后获得1分                    |                            不考虑                            |  No kind of this case  |
 
-Further, I set different levels for this game. The initial lengths of centipede in different levels are the same but this doesn’t mean easy. The more mushrooms there are, the harder it is for the player to shoot the centipede. Needless to say spider and sea monster.
+除此以外, 我在游戏中设置了不同关卡. 每个关卡初始的蜈蚣身节是相等的. 但随着蘑菇数量的增多, 用户很难能击中蜈蚣. 更不用说蝎子和蜘蛛了.
 
 ### Assumption
 While I ran my own game, I met some unexpected circumstances. Therefore, I list some necessary assumptions:
