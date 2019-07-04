@@ -69,16 +69,16 @@ Further, I set different levels for this game. The initial lengths of centipede 
 
 ### Assumption
 While I ran my own game, I met some unexpected circumstances. Therefore, I list some necessary assumptions:
-- At the beginning of each level, If mushroom position coincides with the ini-tial position of the centipede, then player could believe that these mush-rooms have been ‘eaten’ by centipede.
+- At the beginning of each level, If mushroom position coincides with the initial position of the centipede, then player could believe that these mushrooms have been ‘eaten’ by centipede.
 - The spider only appears in the lower part of the game window. Conversely, the sea monster only appears in the upper part of the game window.
-- The player’s scope of activity should not exceed the boundary of the win-dow. In addition, Master couldn’t hit mushroom but bullet could.
+- The player’s scope of activity should not exceed the boundary of the window. In addition, Master couldn’t hit mushroom but bullet could.
 - The shot segments become mushrooms, these mushrooms will always be there whichever level is being played or whatever win or lose unless player use 4 bullets to destroyed them.
 
 # Game Flow Chart
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/flow.png"/>
 </p>
-This figure shows all the processes of the game in detail, including the collision re-sults, score updates and characters movements, etc. In this process, each time computer needs to get order from I/O and determine the collision judgment whether is satisfied or not, and then, refresh the canvas and update the scores.<br>
+This figure shows all the processes of the game in detail, including the collision results, score updates and characters movements, etc. In this process, each time computer needs to get order from I/O and determine the collision judgment whether is satisfied or not, and then, refresh the canvas and update the scores.<br>
 If you’re unfamiliar with this process, you can see my game screen recorder in YouTube:<br>
 https://www.youtube.com/watch?v=iQRfnJUAYQs<br>
 Or watch the original flow chart:<br>
