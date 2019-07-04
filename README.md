@@ -446,7 +446,9 @@ Random function:
 ## Enemies movement
 These enemies are sea monster, spider and centipede. The first two of them are simpler than the last one.
 
-<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/sea_monster.png" width = "250"/>&emsp;&emsp;&emsp;&emsp;</span><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/spider.png" width = "250"/></p>
+<p align=center>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/monster.png" width = "300"/>
+</p>
 
 As figures shown, sea monster walks horizontally, later if it hits the wall, com-puter will give a default position for it and make it disappear in the canvas. And spider walks at will and we can’t find any rule. However, I could achieve more complex trajectory than the ***Atari Centipede*** by using 2 ran-dom numbers on both x and y direction. This might causes spider walks the same path (see below) but it will finally walk from one side to another side because random x and y are non-negative number.
 <p align=center>
