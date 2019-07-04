@@ -14,7 +14,7 @@
 这是一个用C语言实现的《飞天蜈蚣》的“复刻”，由于Linux操作系统下的图形库不够绘制绚丽的画面，因此在本程序中仅用**简单的符号**来代表不同的游戏角色.<br/>
 希望您喜欢这个版本的飞天蜈蚣，如有任何疑问或建议欢迎在 **issue** 处留言. :)<br/>
 建议您最好通读本介绍后再运行`magic.c`程序.<br/>
-访问本油管链接可以观看完整的演示视频: https://www.youtube.com/watch?v=dxoK8hosHjA&t=1s!<br/>
+访问本油管链接可以阿达雅游戏的视频: https://www.youtube.com/watch?v=dxoK8hosHjA&t=1s!<br/>
 
 # 基本介绍
 **注意**: 本程序需要引入 `ncurses` 库, 这个库只存在于 Unix 的操作系统. 在开始运行之前,建议您通过以下 Debian/Ubuntu Linux 的命令行安装需要的库:
@@ -26,52 +26,42 @@ sudo apt−get install libncurses5−dev libncursesw5−dev
 ## 问题重申
 基于原始的雅达利游戏, 我重写了部分规则. 为了使我的程序画面更加稳定和流程，我做了以下必要的前提条件.
 ### Game Regulations
-**用户**<br>
-用户可以上下左右移动. 除此之外, 用户单击空格键即可发射子弹. 记住!您只有四次死亡的机会！<br>
-
-**蘑菇**<br>
-蘑菇是游戏中最主要的障碍物. 蜘蛛有可能会吃掉蘑菇，初次情况之外，如果用户想消灭蘑菇需要耗费4枚子弹(我们提供无限量子弹:)).<br>
-
-**蜘蛛**<br>
-蜘蛛是游戏里最一意孤行的角色. 它可以沿着左边或右边上下移动. 蜘蛛移动的轨迹类似于'W’ 或 ‘I’. 除此之外, 它扮演着亦敌亦友的角色 - 如果它碰到蘑菇那蘑菇就会消失. 相反的,如果它碰到用户用户会失去一条生命. 为了安全起见, 您最好远离这些蜘蛛除非您有信心能击中它们.<br>
-
-**蝎子**<br>
-蝎子是游戏里另一个一意孤行的角色. 相比于蜘蛛, 它就完全是个坏蛋, 它虽然只能向左或向右走但是一旦它碰到用户用户就会失去一条生命.<br>
+蝎子是游戏里另一个一意孤行的角色. 相比于蜘蛛, 它就完全是个坏蛋, 它虽然只能向左或向右走但是一旦它碰到玩家玩家就会失去一条生命.<br>
 
 **蜈蚣**<br>
-蜈蚣是用户最主要要消灭的敌人. 如果没有任何障碍物, 蜈蚣只会一行接着一行地往下走.每次用户击中蜈蚣的部位都会变成一个蘑菇. 如果击中的部位既不在头也不在尾, 蜈蚣就会自己撕裂成两部分, 获得新的头部并向上或向下接近用户. 除此之外, 如果蜈蚣遇到蘑菇或者墙壁时, 它会拐弯下移. 尽量让自己远离蜈蚣，如果被它碰到的话也会失去生命哦!<br>
+蜈蚣是玩家最主要要消灭的敌人. 如果没有任何障碍物, 蜈蚣只会一行接着一行地往下走.每次玩家击中蜈蚣的部位都会变成一个蘑菇. 如果击中的部位既不在头也不在尾, 蜈蚣就会自己撕裂成两部分, 获得新的头部并向上或向下接近玩家. 除此之外, 如果蜈蚣遇到蘑菇或者墙壁时, 它会拐弯下移. 尽量让自己远离蜈蚣，如果被它碰到的话也会失去生命哦!<br>
 
 为了让上述规则更易懂, 我创建了如下关系表格:
 
-|       撞击关系       |                       用户                       |                        子弹                         |                           蘑菇                           |       蜈蚣        |
+|       撞击关系       |                       玩家                       |                        子弹                         |                           蘑菇                           |       蜈蚣        |
 | :-------------: | :------------------------------------------------: | :----------------------------------------------------: | :----------------------------------------------------------: | :--------------------: |
-|   **蜘蛛r**    |             用户死亡, 失误一次生命              |               蜘蛛死亡, 获得600分               |      蘑菇消失, 蘑菇总数 - 1      |         不考虑         |
-| **蝎子** |             用户死亡, 失误一次生命              |            蝎子死亡, 获得600分             |                            不考虑                            |         不考虑         |
-|  **蜈蚣**  |             用户死亡, 失误一次生命              | 击中头部给100分，其余情况给10分 | 蜈蚣掉头 | 其中一只蜈蚣掉头 |
+|   **蜘蛛r**    |             玩家死亡, 失误一次生命              |               蜘蛛死亡, 获得600分               |      蘑菇消失, 蘑菇总数 - 1      |         不考虑         |
+| **蝎子** |             玩家死亡, 失误一次生命              |            蝎子死亡, 获得600分             |                            不考虑                            |         不考虑         |
+|  **蜈蚣**  |             玩家死亡, 失误一次生命              | 击中头部给100分，其余情况给10分 | 蜈蚣掉头 | 其中一只蜈蚣掉头 |
 |  **蘑菇**   | 蘑菇消失, 蘑菇总数 - 1 |                    4 次成功射击后获得1分                    |                            不考虑                            |  不考虑  |
 
-除此以外, 我在游戏中设置了不同关卡. 每个关卡初始的蜈蚣身节是相等的. 但随着蘑菇数量的增多, 用户很难能击中蜈蚣. 更不用说蝎子和蜘蛛了.
+除此以外, 我在游戏中设置了不同关卡. 每个关卡初始的蜈蚣身节是相等的. 但随着蘑菇数量的增多, 玩家很难能击中蜈蚣. 更不用说蝎子和蜘蛛了.
 
-### Assumption
-While I ran my own game, I met some unexpected circumstances. Therefore, I list some necessary assumptions:
-- At the beginning of each level, If mushroom position coincides with the ini-tial position of the centipede, then player could believe that these mush-rooms have been ‘eaten’ by centipede.
-- The spider only appears in the lower part of the game window. Conversely, the sea monster only appears in the upper part of the game window.
-- The player’s scope of activity should not exceed the boundary of the win-dow. In addition, Master couldn’t hit mushroom but bullet could.
-- The shot segments become mushrooms, these mushrooms will always be there whichever level is being played or whatever win or lose unless player use 4 bullets to destroyed them.
+### 基本猜想
+我在运行程序的时候遇到许多非程序性问题. 因此, 我罗列出必要的假设:
+- 在每个关卡最开始的时候, 如果蘑菇所在位置和蜈蚣初始位置重合, 玩家可以认为该蘑菇会被蜈蚣吃掉.
+- 蜘蛛只会出现在游戏窗口的下端. 相反的, 蝎子只会出现在游戏窗口的上方.
+- 玩家的操控范围不能超过游戏窗口的边界. 除此之外, 玩家不能穿越蘑菇但子弹可以.
+- 蜈蚣被射中的身节会变成蘑菇, 这些新生成的蘑菇会随着失败重玩或闯关成功而存在除非被吃掉或击中.
 
-# Game Flow Chart
+# 游戏流程图
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/flow.png"/>
 </p>
-This figure shows all the processes of the game in detail, including the collision re-sults, score updates and characters movements, etc. In this process, each time computer needs to get order from I/O and determine the collision judgment whether is satisfied or not, and then, refresh the canvas and update the scores.<br>
-If you’re unfamiliar with this process, you can see my game screen recorder in YouTube:<br>
+下图详细地介绍整个游戏的流程, 包括碰撞结果, 分数更新和角色移动等. 在这些过程中, 每次计算机从 I/O 获得运行顺序并决定是满足碰撞条件, 然后, 再创新画布并更新分数.<br>
+如果您仍然不熟悉游戏流程，可访问下方的油管链接观看游戏通关全过程:<br>
 https://www.youtube.com/watch?v=iQRfnJUAYQs<br>
-Or watch the original flow chart:<br>
+或者查看原始的流程图:<br>
 https://www.processon.com/view/link/5b040ea4e4b05f5d6b641243
 
-# Function Implementations
+# 函数实现
 
-## Start Menu
+## 开始菜单
 Firstly, I want to create a home page menu to give a short introduction about the game rule. This roll-up menu have 2 choices: play or not.
 ```C
 /* These choices are used in the introduction menu*/
