@@ -1,6 +1,6 @@
 # Atari Centipede Game By C
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "500"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "600"/>
 </p>
 A C language code to imitate the Atari Centipede Game.<br/>
 Hope you like my version of the centipede game and have fun. :)<br/>
