@@ -1,8 +1,11 @@
 # Atari Centipede Game By C
+<p align=center>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "500"/>
+</p>
 A C language code to imitate the Atari Centipede Game.<br/>
 Hope you like my version of the centipede game and have fun. :)<br/>
 It's recommended that you read this readme.md firstly then try to run the program on your Linux device.<br/>
-You can see the original game in here: https://www.youtube.com/watch?v=dxoK8hosHjA&t=1s!<br/>
+You can see the original demonstration in here: https://www.youtube.com/watch?v=dxoK8hosHjA&t=1s!<br/>
 
 # Introduction
 **ATTENTIONS**: This game requires `ncurses` library, which only could be used in Unix OS. Before I start, I suggest you to install this library by the following command in Debian/Ubuntu Linux:
