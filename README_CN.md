@@ -293,7 +293,7 @@ void MushroomProduce(int y, int x)
 }
 ```
 
-**Master** is placed in the bottom but center by using `getmaxyx()` function to store it.
+**玩家** 通过使用 `getmaxyx()` 函数来放置在游戏窗口下方中央的位置.
 
 ```C
 /*
