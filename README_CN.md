@@ -62,14 +62,14 @@ https://www.processon.com/view/link/5b040ea4e4b05f5d6b641243
 # 函数实现
 
 ## 开始菜单
-Firstly, I want to create a home page menu to give a short introduction about the game rule. This roll-up menu have 2 choices: play or not.
+首先, 我需要创建一个主菜单来简单介绍游戏规则. 这个滚动菜单需要给用户提供两种选择: 开始游戏或退出游戏.
 ```C
-/* These choices are used in the introduction menu*/
+/* 这些选项将在介绍菜单里显示*/
 char *startMenu[] = {
         "Start", "Exit",
 };
 
-/* The main content of the introduction menu*/
+/* 介绍菜单里的文字内容*/
 char *readme[] = {
         "*Centipede Game*",
         " ",
@@ -118,16 +118,16 @@ char *readme[] = {
         " ",
 };
 
-/*These choices are used in the quit menu*/
+/* 下列选项将出现在退出菜单 */
 char *quitMenu[] = {
         "No",
         "Yes",
         "Replay",
 };
 ```
-After that, I need to create a window to show this menu. Because I couldn’t find a way to make my text scroll, so I just put them all into menu but only give my text scroll attribution.
+在此之后, 我需要创建一个窗口来显示这个菜单. 因为我没有找到滚动菜单的UI框架, 只要再每行文字里追加滚动菜单属性.
 ```C
-/*This function is the Introduction Menu User Pointer Usage*/
+/* 此功能是简介菜单里用户指针使用 */
 void start()
 {
     ITEM **start_items;
@@ -144,10 +144,10 @@ void start()
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_YELLOW);
 
-    /* Create introduction menu items.
-     * The following operations mainly aim to implement the following requirement:
-     * 1. Readme only shows words and could scroll.
-     * 2. Highlight all choices of startMenu.
+    /* 创建介绍菜单选项.
+     * 以下操作主要旨在实现以下要求：
+     * 1. Readme 只是用来显示文字的.
+     * 2. 高亮所有在开始菜单里的选项.
      */
     n_startMenu = ARRAY_SIZE(startMenu);
     n_readme = ARRAY_SIZE(readme);
@@ -166,18 +166,18 @@ void start()
         set_item_userptr(start_items[item], Click);
         cho++;
     }
-    /*Set the last one is NULL*/
+    /* 设置最后一个为 NULL */
     start_items[n_readme + n_startMenu] = (ITEM *)NULL;
-    /* Crate menu */
+    /* 创建菜单 */
     menu = new_menu((ITEM **)start_items);
 
-    /* This color will be used in startMenu's choices*/
+    /* 这些颜色设置将应用于开始选项*/
     set_menu_fore(menu, COLOR_PAIR(2));
     set_menu_back(menu, COLOR_PAIR(1));
     set_menu_grey(menu, COLOR_PAIR(1));
     menu_opts_off(menu, O_SHOWDESC);
 
-    /* Create the window and make it at center*/
+    /* 创建窗户并让他位于屏幕中央 */
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
     int x_position = (max_x-box_length)/2;
@@ -185,16 +185,16 @@ void start()
     start_menu = newwin(box_width, box_length, y_position, x_position);
     keypad(start_menu, TRUE);//To listen keyboard
 
-    /* Set main window and sub window */
+    /* 设置主窗口和子窗口 */
     set_menu_win(menu, start_menu);
     set_menu_sub(menu, derwin(start_menu, box_width-1, box_length-2, 1, 1));
     set_menu_format(menu, 18, 1);// Set 18 lines inside the box and one choices each line
 
-    /*Create borders around the windows*/
+    /* 创建边界框 */
     box(start_menu, 0, 0);
     refresh();
 
-    /* Post the menu */
+    /* 发布菜单 */
     post_menu(menu);
     wrefresh(start_menu);
 
@@ -229,16 +229,16 @@ void start()
         wrefresh(start_menu);
     }
 
-    /* Unpost and free all the memory taken up */
+    /* 清除菜单并清除缓存 */
     unpost_menu(menu);
     for(int i = 0; i < n_startMenu + n_readme; ++i)
         free_item(start_items[i]);
     free_menu(menu);
-    /*Quit this window and wait for another*/
+    /* 退出当前窗口并等待下一个窗口*/
     endwin();
 }
 ```
-The menu items have been divided into two parts: the 1st part is text(I don’t want computer do more thing for it). But in the second part, I set user pointers to allow player make a choice. In order to remind player to choose, I highlight the background of choices. 
+主菜单被分为2部分: 第一部分是文字(只是用来显示, 就算点击了也无任何响应). 在第二部分, 设置用户指针允许玩家做出选择. 为了提醒玩家确定自己的选择, 我高亮每个选项的背景色. 
 ```C
 /*Filter choices*/
 void Click(char *choice)
@@ -256,7 +256,7 @@ void Click(char *choice)
     }
 }
 ```
-The running result of above codes is shown as follows.
+以上代码的运行结果如下图所示.
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HomePage.png"/>
 </p>
