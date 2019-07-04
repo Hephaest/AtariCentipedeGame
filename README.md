@@ -42,19 +42,19 @@ sudo apt−get install libncurses5−dev libncursesw5−dev
 Based on the arcade original, I rewrite the rules of my own game. In order to make my game more stable, clear and smooth, I make some essential assumptions.
 ### Game Regulations
 **For master**<br>
-I call the player as ’Master’, Master could turn left, right, up and down by direction key. In addition, if player wants to fire a bullet, press space key can easily make it work. Just remember master only has 4 lives, be careful!<br>
+I call the player as ‘Master’, Master could turn left, right, up and down by direction key. In addition, if player wants to fire a bullet, press space key can easily make it work. Just remember master only has 4 lives, be careful!<br>
 
 **For mushroom**<br>
 It is the main obstacle for players to move and fire. Mushrooms can be destroyed after taking four shots or eating by spider.<br>
 
 **For spider**<br>
-It is one kind of the headstrong guy in this game. It could either move up or down or move around. The moving tracks are similar to ’W’ and ’I’. In addition, it is also some people tern a ’frienemy’- If it hits mushroom, mushroom will be destroyed. Conversely, master will die once spider hits him. For the sake of security, I strongly advise players to avoid it unless they could shoot it.<br>
+It is one kind of the headstrong guy in this game. It could either move up or down or move around. The moving tracks are similar to ‘W’ and ‘I’. In addition, it is also some people tern a ‘frienemy’- If it hits mushroom, mushroom will be destroyed. Conversely, master will die once spider hits him. For the sake of security, I strongly advise players to avoid it unless they could shoot it.<br>
 
 **For sea monster**<br>
 In Atari Centipede, it has scorpion. But here, I have sea monster because I think it is cool. It is another headstrong guy in this game. Compared to spider, it is totally a bad guy who is always loafing around horizontally and doing nothing but hitting master and making it die.<br>
 
 **For centipede**<br>
-It is the major target of players. If nothing happens, centipede just walks line by line. Every time player shoots the centipede, the shot segment becomes a mush-room. Then if the shot segment is no in the tail or the body centipede only leaves, the centipede will split into two, gain a new head and both descend towards the player but ascend towards the player if it is in the floor. Besides, if centipede hits the wall or mushroom, it will try to turn back and descend towards the player if no other mushroom and centipede in where it will descend. Keep yourself away from centipede in case of hitting, which gonna takes you life!<br>
+It is the major target of players. If nothing happens, centipede just walks line by line. Every time player shoots the centipede, the shot segment becomes a mushroom. Then if the shot segment is no in the tail or the body centipede only leaves, the centipede will split into two, gain a new head and both descend towards the player but ascend towards the player if it is in the floor. Besides, if centipede hits the wall or mushroom, it will try to turn back and descend towards the player if no other mushroom and centipede in where it will descend. Keep yourself away from centipede in case of hitting, which gonna takes you life!<br>
 
 To make the above game regulations easier to understand, I created a table as follows:
 
