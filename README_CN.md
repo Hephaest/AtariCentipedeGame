@@ -35,7 +35,7 @@ sudo apt−get install libncurses5−dev libncursesw5−dev
 
 |       撞击关系       |                       玩家                       |                        子弹                         |                           蘑菇                           |       蜈蚣        |
 | :-------------: | :------------------------------------------------: | :----------------------------------------------------: | :----------------------------------------------------------: | :--------------------: |
-|   **蜘蛛r**    |             玩家死亡, 失误一次生命              |               蜘蛛死亡, 获得600分               |      蘑菇消失, 蘑菇总数 - 1      |         不考虑         |
+|   **蜘蛛**    |             玩家死亡, 失误一次生命              |               蜘蛛死亡, 获得600分               |      蘑菇消失, 蘑菇总数 - 1      |         不考虑         |
 | **蝎子** |             玩家死亡, 失误一次生命              |            蝎子死亡, 获得600分             |                            不考虑                            |         不考虑         |
 |  **蜈蚣**  |             玩家死亡, 失误一次生命              | 击中头部给100分，其余情况给10分 | 蜈蚣掉头 | 其中一只蜈蚣掉头 |
 |  **蘑菇**   | 蘑菇消失, 蘑菇总数 - 1 |                    4 次成功射击后获得1分                    |                            不考虑                            |  不考虑  |
@@ -261,16 +261,16 @@ void Click(char *choice)
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HomePage.png"/>
 </p>
 
-## Display Roles
+## 角色扮演
 
-**Mushrooms** are placed in random but their initial positions cannot be the same as master and centipede, I use for loop to create new random position of mushroom in case of duplication.
+**蘑菇** 被随机地放置在整个游戏窗口, 可以使用循环语句查找位置重叠的蘑菇并给它们重新设置新的位置.
 
 ```C
 /*
- * Produce mushroom
- * The following operations mainly aim to implement the following requirements:
- * 1. The mushroom position is randomly generated.
- * 2. However, the last 3 lines and 1st line cannot be used because of master and centipede.
+ * 创建蘑菇
+ * 以下操作主要旨在实现以下要求：
+ * 1. 蘑菇的位置应随机生成.
+ * 2. 第一行和后三行被蜈蚣和玩家预先占有.
  */
 void MushroomProduce(int y, int x)
 {
@@ -288,7 +288,7 @@ void MushroomProduce(int y, int x)
             }
         }
         i++;
-    } while (i < mushLength);/*Until no overlap*/
+    } while (i < mushLength); /* 直到没有重叠 */
     for(int i = 0; i < mushLength; i++) mushroom[i].mush_record=4;
 }
 ```
@@ -297,9 +297,9 @@ void MushroomProduce(int y, int x)
 
 ```C
 /*
- * Produce master (player)
- * The following operations mainly aim to implement the following requirements:
- * 1. Make player central at the bottom of the screen.
+ * 玩家创建
+ * 以下操作主要旨在实现以下要求：
+ * 1. 确保玩家在游戏窗口底端的中央位置.
  */
 void MasterProduce(WINDOW *win)
 {
@@ -314,7 +314,7 @@ void MasterProduce(WINDOW *win)
     master_3_x = (win_x - master_length) / 2;
     curr_bullet_y = master_1_y;
     curr_bullet_x = master_1_x + 1;
-    /*Draw in window*/
+    /* 绘制窗口 */
     mvwprintw(win, master_1_y, master_1_x, "_");
     mvwprintw(win, master_1_y, master_1_x + 1, "^");
     mvwprintw(win, master_1_y, master_1_x + 2, "_");
@@ -327,12 +327,12 @@ void MasterProduce(WINDOW *win)
 }
 ```
 
-**Centipede** is placed in the top but center by using `getmaxyx()` function and I assigned `positions(x,y)` from the tail to the head.
+**蜈蚣** 通过 `getmaxyx()` 方法放置在游戏窗口上方的中央位置并使用 `positions(x,y)` 从尾到头赋值.
 
 ```C
 /*
- * Produce centipede
- * Start with the tail
+ * 创建蜈蚣
+ * 从尾部开始
  */
 void CentipedeProduce(int x)
 {
@@ -368,13 +368,13 @@ void CentipedeProduce(int x)
     Centipede[0].head = 0;
 }
 ```
-In terms of spiders and sea monsters, however, I don’t want to see them always appear in the same position, so I use variable `num` to decide whether they appears from the left or right of the wall. In addition, I used another random numbers to decide whether to let them appear (see below codes).
+对于蜘蛛和蝎子而言, 然而, 它们并不总是出现在固定位置, 需要使用变量 `num` 来决定从游戏窗口左侧还是右侧出现. 除此之外, 可以使用另一个随机变量控制它们的出现与否 (详见下方源码).
 
 ```C
 /*
- * Produce sea monster
- * The following operations mainly aim to implement the following requirements:
- * Make sea monster appear randomly.
+ * 创建蝎子
+ * 以下操作主要旨在实现以下要求：
+ * 确保蝎子随机出现.
  */
 void Sea_MonsterProduce(int y, int x)
 {
@@ -400,9 +400,9 @@ void Sea_MonsterProduce(int y, int x)
 }
 
 /*
- * Produce spider
- * The following operations mainly aim to implement the following requirements:
- * Make spider appear randomly.
+ * 创建蜘蛛
+ * 以下操作主要旨在实现以下要求：
+ * 确保蜘蛛随机出现.
  */
 void SpiderProduce(int y, int x)
 {
@@ -434,10 +434,10 @@ void SpiderProduce(int y, int x)
 }
 ```
 
-Random function:
+随机函数:
 
 ```C
- /* While centipedes move, sea monster and spider also have chances to move by random chances */
+ /* 当蜈蚣在移动使，蝎子和蜘蛛也有随机出现的机会 */
     srand(time(NULL));
     int ran_sea = rand() % 10;
     if(ran_sea == 1) sea_appear=1;
