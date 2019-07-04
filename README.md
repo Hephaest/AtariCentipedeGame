@@ -1,4 +1,9 @@
 # Atari Centipede Game By C
+
+[![LICENSE](https://img.shields.io/cocoapods/l/AFNetworking.svg)](https://github.com/Hephaest/AtariCentipedeGame/blob/master/LICENSE)
+[![OS](https://img.shields.io/badge/OS-Ubuntu16.04-lightgrey.svg)](http://releases.ubuntu.com/16.04/)
+[![Library](https://img.shields.io/badge/implementation-ncurses-blue.svg)](http://www.tldp.org/HOWTO/NCURSES-Programming-HOWTO/)
+
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "800"/>
 </p>
