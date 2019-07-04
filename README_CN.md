@@ -11,8 +11,8 @@
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "800"/>
 </p>
 这是一个用C语言实现的《飞天蜈蚣》的“复刻”，由于Linux操作系统下的图形库不够绘制绚丽的画面，因此在本程序中仅用**简单的符号**来代表不同的游戏角色.<br/>
-希望您喜欢这个版本的飞天蜈蚣，如有任何疑问或建议欢迎在 **issue** 处留言. :)<br/>
-It's recommended that you read this readme.md firstly then try to run the program on your Linux device.<br/>
+希望阁下喜欢这个版本的飞天蜈蚣，如有任何疑问或建议欢迎在 **issue** 处留言. :)<br/>
+建议阁下最好通读本介绍后再运行`magic.c`程序.<br/>
 You can see the original demonstration in here: https://www.youtube.com/watch?v=dxoK8hosHjA&t=1s!<br/>
 
 # Introduction
