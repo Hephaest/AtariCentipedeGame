@@ -58,6 +58,7 @@ Or watch the original flow chart:<br>
 https://www.processon.com/view/link/5b040ea4e4b05f5d6b641243
 
 # Function Implementations
+
 ## Start Menu
 Firstly, I want to create a home page menu to give a short introduction about the game rule. This roll-up menu have 2 choices: play or not.
 ```C
@@ -257,7 +258,9 @@ The running result of above codes is shown as follows.
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HomePage.png"/>
 </p>
+
 ## Display Roles
+
 **Mushrooms** are placed in random but their initial positions cannot be the same as master and centipede, I use for loop to create new random position of mushroom in case of duplication.
 ```C
 /*
