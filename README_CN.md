@@ -8,7 +8,7 @@
 中文介绍 | [English Introduction](README.md)
 
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "800"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif"/>
 </p>
 
 这是一个用C语言实现的《飞天蜈蚣》的“复刻”，由于Linux操作系统下的图形库不够绘制绚丽的画面，因此在本程序中仅用**简单的符号**来代表不同的游戏角色.<br/>
@@ -1287,13 +1287,13 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
     else usleep(DELAY);
 }
 ```
-## Canvas Refreshment
+## 画布刷新
 
-I debugged many times until I found the ideal steps of canvas refreshment (see below). I fix out the problem which could make spider walk slow by adding new int type variable `delay_spider`, like switch I could turn on or turn off. I do this process when repainting canvas. There is nothing else worth saying, the process is clear in my flow chart.
+经过多次调试后我终于找到比较理想的画布刷新顺序 (详见下方源码). 通过控制变量 `delay_spider` 来控制蜘蛛爬行的速度. 下方的代码主要是为了刷新游戏窗口的画布. 没有特别有技术困难的地方, 流程详情详见上方提到的流程图.
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/game.png"></p>
 
 ```C
-/*This function is used to create game interface*/
+/* 此功能用于创建游戏界面 */
 void GameInterface()
 {
 
@@ -1305,7 +1305,7 @@ void GameInterface()
     interrupt = 0; interrupt_begin = 0; interrupt_end = 0;
     begin = 0; over = 0;
     
-    /* Curses initialization */
+    /* Curses 初始化 */
     initscr();
     noecho();//don't display input character
     start_color();
@@ -1323,14 +1323,14 @@ void GameInterface()
         exit(1);
     }
 
-    /* The following operations mainly aim to implement the following requirements:
-     * 1. Create 7 windows and ball window will cover the big window.
-     * 2. Besides, other windows are used for showing score, pause, continue and quit.
-     * 3. Except for big windows, each window need a panel.
-     * 4. Only the panel of continue need to hide at beginning.
+    /* 以下操作主要旨在实现以下要求:
+     * 1. 在大窗口里新建7个小窗口.
+     * 2. 除此之外, 其他窗口用来展示分数, 用时以及可选按钮.
+     * 3. 除了大窗口, 每个小窗口都有属于自己的画板.
+     * 4. 只有“continue”的画板需要在游戏的开始时被隐藏.
      */
     getmaxyx(stdscr, max_y, max_x);
-    /* Create windows for the panels */
+    /* 为窗口新建画板 */
     my_wins[0] = newwin(max_y-score_line, max_x, 0, 0);//big window
     my_wins[1] = newwin(score_line, max_x-quit-level-Pause-Continue-Time, max_y-score_line, 0);//score
     mvwprintw(my_wins[1], 1, 1, "Score: %d", score);
@@ -1360,13 +1360,13 @@ void GameInterface()
     panel_datas[4].hide = TRUE;
     hide_panel(my_panels[4]);
 
-    /* Show it on the screen */
+    /* 将画板显示在屏幕上 */
     doupdate();
-    /*Produce mushrooms, a master and a centipede at first*/
+    /* 在游戏的刚开始新建所有角色并初始化 */
     MushroomProduce(win_6_y,win_6_x-1);
     MasterProduce(my_wins[6]);
     CentipedeProduce(win_6_x);
-    /*If player do not lose all lives, the game will continue. Else, quit*/
+    /* 如果发现用户没有多余的生命, 则宣告游戏失败 */
     begin = time(NULL);
     while(life > 0)
     {
