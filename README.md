@@ -541,11 +541,11 @@ void SpiderMove(int x,int y)
 As for centipede, it is the most complex case in my game. All special cases I could image are listed in below. The major method I use is struct and fixed array. Array is thought to be stupid than linked list but I think it is helpful in collision because I could record each node’s situation. Then each time in movement, I only deal with the issue of their heads, later make their bodies follow their head by assigning previous node’s positions. Finally, repaint the canvas. Specific operations you could see in following source code.
 
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitMush.png" width = "400"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitMush.png"/>
 </p>
 
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitWall.png" width = "400"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitWall.png"/>
 </p>
 
 ```C
