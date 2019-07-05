@@ -1,4 +1,22 @@
       
+Table of Contents
+=================
+
+   * [C 语言实现Atari经典街机游戏《飞天蜈蚣》](#c-语言实现atari经典街机游戏飞天蜈蚣)
+   * [基本介绍](#基本介绍)
+      * [问题重申](#问题重申)
+         * [游戏规则](#游戏规则)
+         * [基本猜想](#基本猜想)
+   * [游戏流程图](#游戏流程图)
+   * [函数实现](#函数实现)
+      * [开始菜单](#开始菜单)
+      * [角色扮演](#角色扮演)
+      * [移动的敌人](#移动的敌人)
+      * [移动的玩家](#移动的玩家)
+      * [菜单操作](#菜单操作)
+      * [Collision Problem](#collision-problem)
+      * [画布刷新](#画布刷新)
+
 #  C 语言实现Atari经典街机游戏《飞天蜈蚣》
 
 [![LICENSE](https://img.shields.io/cocoapods/l/AFNetworking.svg)](https://github.com/Hephaest/AtariCentipedeGame/blob/master/LICENSE)
@@ -516,11 +534,11 @@ void SpiderMove(int x,int y)
 就蝎子而言, 它是本游戏中最复杂的情况. 我将我能想到的所有情况都在下方列出. 我主要使用方法是结构体和数组. 因为碰撞每次都需要考虑每个身节的变化情况, 因此数组更容易帮我定位到指定身节. 每一次移动, 只需要处理蜈蚣头部运动情况, 并让它的身节跟着头部运动即可. 最后, 重刷画布. 具体的操作已在下方源码中列出.
 
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitMush.png" width = "400"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitMush.png"/>
 </p>
 
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitWall.png" width = "400"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitWall.png"/>
 </p>
 
 ```C
@@ -795,9 +813,9 @@ void getOrder(WINDOW *win, int x, int y)
 
 我在游戏界面创建了三个选项. 如果玩家按下 **P** 或 **p**, 该按钮将消失. 所有的操作都会被暂停并且 **Continue** 按钮出现. 相反地, 如果玩家按下 **C** 或 **c**, 该按钮将消失. 所有被中断的操作继续并且 **Pause** 按钮出现. 除此之外, 玩家可以随时退出游戏窗口, 只需要按下 **Q** 或者 **q** 并选择 **Yes**.
 
-<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/screens.png" width = "500"></p>
+<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/screens.png" width = "800"></p>
 
-<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/quit.png" width = "250"></p>
+<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/quit.png" width = "400"></p>
 
 ```C
 /* 这个结构体为了实现 "Pause" 和 "Continue" 按钮的隐藏 */
