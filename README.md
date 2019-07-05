@@ -24,7 +24,7 @@ Table of Contents
 [中文介绍](README_CN.md) | English Introduction
 
 <p align=center>
-<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif" width = "800"/>
+<img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif"/>
 </p>
 A C language code to imitate the Atari Centipede Game.<br/>
 Hope you like my version of the centipede game and have fun. :)<br/>
