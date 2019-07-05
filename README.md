@@ -1319,7 +1319,7 @@ I debugged many times until I found the ideal steps of canvas refreshment (see b
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/game.png"></p>
 
 ```C
-/*This function is used to create game interface*/
+/* This function is used to create game interface */
 void GameInterface()
 {
 
@@ -1388,11 +1388,11 @@ void GameInterface()
 
     /* Show it on the screen */
     doupdate();
-    /*Produce mushrooms, a master and a centipede at first*/
+    /* Produce mushrooms, a master and a centipede at first */
     MushroomProduce(win_6_y,win_6_x-1);
     MasterProduce(my_wins[6]);
     CentipedeProduce(win_6_x);
-    /*If player do not lose all lives, the game will continue. Else, quit*/
+    /* If player do not lose all lives, the game will continue. Else, quit */
     begin = time(NULL);
     while(life > 0)
     {
