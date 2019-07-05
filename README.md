@@ -470,29 +470,29 @@ Random function:
     if(ran_spider == 1) spider_appear = 1;
 ```
 
-## Enemies movement
-These enemies are sea monster, spider and centipede. The first two of them are simpler than the last one.
+## 移动的敌人
+蝎子, 蜘蛛和蜈蚣都是玩家的敌人. 前两种敌人处理起来比后一种简单很多.
 
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/monster.png" width = "500"/>
 </p>
 
-As figures shown, sea monster walks horizontally, later if it hits the wall, com-puter will give a default position for it and make it disappear in the canvas. And spider walks at will and we can’t find any rule. However, I could achieve more complex trajectory than the ***Atari Centipede*** by using 2 ran-dom numbers on both x and y direction. This might causes spider walks the same path (see below) but it will finally walk from one side to another side because random x and y are non-negative number.
+如上图所示, 蝎子是平行移动的, 之后会遇到游戏窗口的边界, 计算机会给它一个初始位置并让它消失在游戏窗口里. 而蜘蛛是随意走动的我们很难能找到规律. 然而, 我使用了比 ***飞天蜈蚣*** 里更复杂的方法来模拟蜘蛛的爬行轨迹: 在 x 和 y 方向的二维随机坐标. 但这个做法可能会使蜘蛛在同一条路径上下爬行 (详见下图) 但最终会引导蜘蛛从游戏窗口的一端走向另一端因为随机坐标 x 和 y 都是非负数.
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/trace.png" width = "300"/>
 </p>
 
-Besides, I give spider x and y boundaries conditions in order that it will never hit its partner-sea monster. In addition, I set a switch to delay the walk speed of spider (not in following code) and make it start from left to right and then from right to left by turns.
+除此之外, 我给蜘蛛设置了 x 和 y 的边界条件以防它会和它的好朋友蝎子相撞. 另外, 我用布尔二值的方法设置开关来延缓蜘蛛的运行速度并让它依次从窗口的左边或右边出现.
 
 ```C
-/* Sea monster movement
- * This function is used to make sea monster move in line
+/* 移动的蝎子
+ * 此功能实现蝎子的平行移动
  */
 void sea_monsterMove(int x)
 {
         Sea_Monster[1].x = Sea_Monster[0].x;
         Sea_Monster[0].next_x = Sea_Monster[0].x + Sea_Monster[0].x_direction;
-        /* If sea monster will hit the wall, make it disappear*/
+        /* 如果蝎子即将遇到游戏窗口边界, 使其消失. */
         if (Sea_Monster[0].next_x > x || Sea_Monster[0].next_x < 0)
         {
             Sea_Monster[0].x = -1;
@@ -505,8 +505,8 @@ void sea_monsterMove(int x)
         }
 }
 
-/* Spider movement
- * This function is used to make sea monster move both in x and y directions
+/* 移动的蜘蛛
+ * 此功能实现蜘蛛 x 和 y 方向上的移动.
  */
 void SpiderMove(int x,int y)
 {
@@ -517,7 +517,7 @@ void SpiderMove(int x,int y)
     {
         Spider[j].next_x = Spider[j].x + ran_x*Spider[j].x_direction;
         Spider[j].next_y = Spider[j].y + Spider[j].y_direction;
-        /* If spider will hit the wall, make it disappear and change its initial position*/
+        /* 如果蜘蛛即将遇到游戏窗口边界, 使其消失并重新设置初始位置 */
         if (Spider[j].next_x > x || Spider[j].next_x < 0)
         {
             Spider[0].x = -1;
@@ -527,7 +527,7 @@ void SpiderMove(int x,int y)
             num *= -1;
             break;
         }
-        /* If spider will hit the floor, change its y direction*/
+        /* 如果蜘蛛即将遇到游戏窗口下边界, 更改它的 y 方向. */
         if(Spider[j].next_y > y - 1 || Spider[j].next_y < ran_y)
         {
             Spider[j].y_direction *= -1;
@@ -538,7 +538,7 @@ void SpiderMove(int x,int y)
 }
 ```
 
-As for centipede, it is the most complex case in my game. All special cases I could image are listed in below. The major method I use is struct and fixed array. Array is thought to be stupid than linked list but I think it is helpful in collision because I could record each node’s situation. Then each time in movement, I only deal with the issue of their heads, later make their bod-ies follow their head by assigning previous node’s positions. Finally, repaint the canvas. Specific operations you could see in following source code.
+就蜈蚣而言, 它是本游戏中最难处理的情况. 我把我能想到的所有情况在下文中列出了. 我主要使用的方法是结构体和定长数组. 数组可能会被认为是一种很愚蠢的办法, 但是因为我需要直到蜈蚣每个身节的碰撞情况因此数组是本游戏最恰当的方法. 在每次蜈蚣移动的过程中, 我只需要考虑它的头部移动的问题, 处理完后只需让蜈蚣剩余的身节跟随头部的变化而变化即可. 最后, 重新渲染画布. 具体操作详见下方源码.
 
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/HitMush.png" width = "400"/>
@@ -550,20 +550,20 @@ As for centipede, it is the most complex case in my game. All special cases I co
 
 ```C
 /*
- * This function is used to decide where each component of centipede should reach.
- * Once centipede moves, computer needs to discuss the situations separately
+ * 此功能用于确定蜈蚣的每个身节应该到达的位置.
+ * 一旦蜈蚣移动, 计算机就要对它的运动情况进行分析.
  */
 void CentipedeMove(int x, int y)
 {
     for(int i = 0; i < Length; i++)
     {
         int skip=0;//This is used to mark
-        /*Computer only moves the position of centipede which has not yet been shot*/
-        if(Centipede[i].head >=0 && Centipede[i].Clear < 0)
+        /* 计算机只移动尚未射中的蜈蚣的身节. */
+        if(Centipede[i].head >= 0 && Centipede[i].Clear < 0)
         {
             int j = i;
             int k = i + 1;
-            /*For multiple centipedes, computer recognize their head, and make their own bodies follow them*/
+            /* 对于多个蜈蚣，程序识别他们的头部，并使他们自己的身体跟随他们. */
             while(k <= Length - 1 && Centipede[k].head < 0 && Centipede[k].Clear < 0)
             {
                 j++;
@@ -578,16 +578,15 @@ void CentipedeMove(int x, int y)
             }
             Centipede[i].next_x = Centipede[i].x + Centipede[i].x_direction;
             Centipede[i].next_y = Centipede[i].y + Centipede[i].y_direction;
-            /* If the centipede head will hit the wall, it will move down and make a turn. However:
-             * 1. If other centipede is under it, the centipede needs to return the same way it came.
-             * 2. If the centipede moves down, it will hit the mushroom. Hence, it needs to bypass the mushroom.
-             * 3. If the centipede moves down, it will turn left or right. However, it will hit mushroom.
-             *    In this case, it should not turn left or right, just move down.
-             * 4. If the centipede moves down, it will hit the floor. It needs to make a turn and turn up.
+            /* 如果蜈蚣即将碰到游戏窗口左右边界, 让它掉头并向下移动. 然而:
+             * 1. 如果正下方有别的蜈蚣, 此蜈蚣是掉头不下移.
+             * 2. 如果正下方有蘑菇. 蜈蚣下移的时候要躲避蘑菇.
+             * 3. 如果下移掉头后会碰到蘑菇, 它需要再下移一格以后再掉头.
+             * 4. 如果蜈蚣下移后会触碰游戏窗口的下边界, 它需要往上走.
              */
             if (Centipede[i].next_x > x || Centipede[i].next_x < 0)
             {
-                /*For case 1*/
+                /* 针对情况1 */
                 for(int k = 0; k < Length; k++)
                 {
                     if(Centipede[k].Clear < 0 && (k < i || k > j))
@@ -602,7 +601,7 @@ void CentipedeMove(int x, int y)
 
                 for(int j = 0; j < mushLength; j++)
                 {
-                    /*For case 2*/
+                    /* 针对情况2 */
                     if(Centipede[i].next_y == mushroom[j].y && Centipede[i].x == mushroom[j].x)
                     {
                         Centipede[i].x_direction *= -1;
@@ -610,21 +609,21 @@ void CentipedeMove(int x, int y)
                         skip=1;
                         Centipede[i].x += Centipede[i].x_direction;
                     }
-                    /*For case 3*/
+                    /* 针对情况3 */
                     if(Centipede[i].next_y == mushroom[j].y && Centipede[i].x - 1 == mushroom[j].x || Centipede[i].next_y == mushroom[j].y && Centipede[i].x + 1 == mushroom[j].x)
                     {
                         Centipede[i].y += 1;
                         skip = 1;
                     }
                 }
-                /*For case 4*/
+                /* 针对情况4 */
                 if (Centipede[i].next_y > y)
                 {
                     Centipede[i].y -= 3;
                     Centipede[i].x_direction *= -1;
                     skip = 1;
                 }
-                /*Default case, just move down and make a turn*/
+                /* 默认情况, 只掉头并下移 */
                 if(!skip)
                 {
                     Centipede[i].x_direction *= -1;
@@ -633,15 +632,15 @@ void CentipedeMove(int x, int y)
             }
             else
             {
-                /* If the centipede head will hit the mushroom, it will move down and make a turn. However:
-                 * 5. If other centipede is under it, the centipede needs to return the same way it came.
-                 * 6. If the centipede moves down, it will hit the mushroom. Hence, it needs to bypass the mushroom.
+                /* 如果蜈蚣的头部会撞上蘑菇, 它需要掉头下移. 然而:
+                 * 5. 如果正下方有另一条蜈蚣, 此蜈蚣只能原路返回.
+                 * 6. 如果下移会撞上另一个蘑菇. 蜈蚣需要躲避此蘑菇.
                  */
                 for(int j = 0; j < mushLength; j++)
                 {
                     if(Centipede[i].next_x == mushroom[j].x && Centipede[i].y == mushroom[j].y)
                     {
-                        /*For case 5*/
+                        /* 针对情况5 */
                         for(int k = 0; k < Length; k++)
                         {
                             if(Centipede[k].Clear < 0 && (k < i || k > j))
@@ -653,7 +652,7 @@ void CentipedeMove(int x, int y)
                                 }
                             }
                         }
-                        /*For case 6*/
+                        /* 针对情况6 */
                         for(int k = 0; k < mushLength; k++)
                         {
                             if(Centipede[i].next_y == mushroom[k].y && Centipede[i].x == mushroom[k].x && j!=k)
@@ -664,7 +663,7 @@ void CentipedeMove(int x, int y)
                                 Centipede[i].x += Centipede[i].x_direction;
                             }
                         }
-                        /*Default case, just move down and make a turn*/
+                        /* 默认情况, 只掉头并下移 */
                         if(!skip)
                         {
                             Centipede[i].x_direction *= -1;
@@ -673,9 +672,9 @@ void CentipedeMove(int x, int y)
                         }
                     }
                 }
-                /* For case 7
-                 * If the centipede head will hit other centipedes in the same y direction, then:
-                 * It will move down and make a turn.
+                /* 针对情况 7
+                 * 如果蜈蚣的头部会在同一个 y 方向上撞上另一条蜈蚣, 那么:
+                 * 此蜈蚣要做出妥协, 掉头并下移.
                  */
                 for(int k = 0; k < Length; k++)
                 {
@@ -689,7 +688,7 @@ void CentipedeMove(int x, int y)
                         }
                      }
                 }
-                /*If not above case happens, just move in x direction*/
+                /* 如果本次移动不属于以上情况, 那蜈蚣只需要沿着 x 方向前行 */
                 if(skip==0) Centipede[i].x += Centipede[i].x_direction;
             }
         }
