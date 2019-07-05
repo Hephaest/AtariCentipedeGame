@@ -14,7 +14,7 @@ Table of Contents
       * [移动的敌人](#移动的敌人)
       * [移动的玩家](#移动的玩家)
       * [菜单操作](#菜单操作)
-      * [Collision Problem](#collision-problem)
+      * [碰撞问题](#碰撞问题)
       * [画布刷新](#画布刷新)
 
 #  C 语言实现Atari经典街机游戏《飞天蜈蚣》
@@ -983,7 +983,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
         free_item(my_items[i]);
 }
 ```
-## Collision Problem
+## 碰撞问题
 我把碰撞问题分成2部分. 第一部分是子弹射中敌人: 对于蜘蛛和蝎子只需要一个子弹就够了, 蜈蚣的单个身节也只需要一个但蘑菇需要4枚子弹才能完全消除. 然而, 射中蜈蚣不同位置获得的奖励分数也不同. 另外, 蜈蚣被击中的部位可能会长出新的头部, 我已把所有我能想到的情况罗列在下方. 如果玩家把蜈蚣全部身节都射中了, 玩家就能成功进入下一关.
 
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/coli.png" width = "400"></p>
