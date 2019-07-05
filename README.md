@@ -821,9 +821,9 @@ void getOrder(WINDOW *win, int x, int y)
 
 I create 3 options in game interface. If player press **P** or **p**, this button will disappear. All operation are stopped and **Continue** button appears. Inversely, If player press **C** or **c**, this button will disappear. All operation keep working and **Pause** button appears. Besides, player could quit from game whenever they want, just press **Q** or **q** and choose **Yes**.
 
-<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/screens.png" width = "500"></p>
+<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/screens.png" width = "800"></p>
 
-<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/quit.png" width = "250"></p>
+<p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/quit.png" width = "400"></p>
 
 ```C
 /* This struct is used to achieve "Pause" and "Continue" hide */
