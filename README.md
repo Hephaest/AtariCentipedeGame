@@ -819,7 +819,7 @@ void getOrder(WINDOW *win, int x, int y)
 
 ## Menu Operation
 
-I create 3 options in game interface. If player press **P** or **p**, this button will dis-appear. All operation are stopped and **Continue** button appears. Inversely, If player press **C** or **c**, this button will disappear. All operation keep working and **Pause** button appears. Besides, player could quit from game whenever they want, just press **Q** or **q** and choose **Yes**.
+I create 3 options in game interface. If player press **P** or **p**, this button will disappear. All operation are stopped and **Continue** button appears. Inversely, If player press **C** or **c**, this button will disappear. All operation keep working and **Pause** button appears. Besides, player could quit from game whenever they want, just press **Q** or **q** and choose **Yes**.
 
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/screens.png" width = "500"></p>
 
@@ -904,7 +904,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_YELLOW);
 
-    /* Create items and menu*/
+    /* Create items and menu */
     n_quitMenu = ARRAY_SIZE(quitMenu);
     my_items = (ITEM **)calloc(n_quitMenu + 1, sizeof(ITEM *));
     for(i = 0; i < n_quitMenu; i++)
@@ -935,7 +935,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
     {
         switch(ch)
         {
-            /*Each time after ch=getch(), we need to give ch a default value. Otherwise, it will report error.*/
+            /* Each time after ch = getch(), we need to give ch a default value. Otherwise, it will report error. */
             case KEY_LEFT:
                 menu_driver(my_menu, REQ_PREV_ITEM);
                 ch = 0;
@@ -944,7 +944,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                 menu_driver(my_menu, REQ_NEXT_ITEM);
                 ch = 0;
                 break;
-            case 10:	/* This is Enter key*/
+            case 10:	/* This is Enter key */
             {
                 if(item_name(current_item(my_menu)) == "Yes")
                 {
@@ -956,7 +956,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                     endwin();
                     exit(0);
                 }
-                /*clear quit menu and return to previous one*/
+                /* clear quit menu and return to previous one */
                 if(item_name(current_item(my_menu)) == "No")
                 {
                     wclear(my_menu_win);
@@ -967,7 +967,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                     ch = 0;
                     break;
                 }
-                /*clear quit menu and into new game*/
+                /* clear quit menu and into new game */
                 if(item_name(current_item(my_menu)) == "Replay")
                 {
                     check = 1;
@@ -996,7 +996,7 @@ I divide collision problems as 2 parts. The first part is that bullet hits enemi
 
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/coli.png" width = "400"></p>
 
-The second part is that once enemies hit master (player), master will lose one life until master doesn’t have any life then game over. After being hitting, if master still has one more lives, player could play this level again, however, each mush-room has 4 lives, including which has being hit. All enemies return to their initial position waiting for orders.
+The second part is that once enemies hit master (player), master will lose one life until master doesn’t have any life then game over. After being hitting, if master still has one more lives, player could play this level again, however, each mushroom has 4 lives, including which has being hit. All enemies return to their initial position waiting for orders.
 
 You might have a question about how I achieve multiple centipede after splitting and make them move in the same rule. Well, I define an int type `Clear` in struct so that I could trace all nodes of the original centipede. For example, if I shoot the ith node of it, I record this node by writing `i` into `Centipede[i]`.Clear, the original Clear value of its bodies are both -1. After that, we need to traverse all centipedes whose Clear value is `-1` and head value is greater than or equal to `0` (which means they have not yet been shot and they are the first node of each centipede). I don’t care about the rest bodies of each centipede, if they have not yet been shot, I will make them follow their heads.
 
@@ -1011,7 +1011,7 @@ You might have a question about how I achieve multiple centipede after splitting
  */
 void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
 {
-    /*The bullet hits the mushroom, Mushrooms can be destroyed and disappear only when taking 4 shoots*/
+    /* The bullet hits the mushroom, Mushrooms can be destroyed and disappear only when taking 4 shoots */
     for(int i = 0; i < mushLength; i++) {
         if (bullet_x == mushroom[i].x && bullet_y == mushroom[i].y)
         {
@@ -1033,7 +1033,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
             Fire = 0;
         }
     }
-    /*When spider hits mushroom, mushroom will be eaten and disappear*/
+    /* When spider hits mushroom, mushroom will be eaten and disappear */
     for(int i = 0; i < mushLength; i++) {
         if (Spider[1].x == mushroom[i].x && Spider[1].y == mushroom[i].y)
         {
@@ -1049,7 +1049,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
             mushLength -= 1;
         }
     }
-    /*Once spider, sea monster hits master, master will die*/
+    /* Once spider, sea monster hits master, master will die */
     for(int i = 0; i < 3; i++)
     {
         if((Spider[i].x == master_1_x && Spider[i].y == master_1_y) || (Spider[i].x == master_1_x + 1 && Spider[i].y == master_1_y) || (Spider[i].x==master_1_x+2 && Spider[i].y == master_1_y) || 
@@ -1071,7 +1071,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
     }
 
 
-    /*Once bullet hits sea monster or spider, they will be destroyed and disappear*/
+    /* Once bullet hits sea monster or spider, they will be destroyed and disappear */
     for(int i = 0; i < 2; i++) {
         if (bullet_x == Sea_Monster[i].x && bullet_y == Sea_Monster[i].y)
         {
@@ -1096,51 +1096,51 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
             Fire = 0;
         }
     }
-    /*Once bullet hits centipede, computer need to discuss the situations separately*/
+    /* Once bullet hits centipede, computer need to discuss the situations separately */
     for(int i = 0; i < Length; i++)
     {
         if(bullet_x == Centipede[i].x && bullet_y == Centipede[i].y)
         {
-            /*If the component of centipede has not yet been hit*/
+            /* If the component of centipede has not yet been hit */
             if(Centipede[i].Clear < 0)
             {
-                /*All these situations have common result: the shot segment becomes a mushroom*/
+                /* All these situations have common result: the shot segment becomes a mushroom */
                 mushLength += 1;
                 mushroom[mushLength - 1].x = Centipede[i].x;
                 mushroom[mushLength - 1].y = Centipede[i].y;
                 mushroom[mushLength - 1].mush_record = 4;
                 Centipede[i].Clear = i;
-                /*If bullet hits its body and no more body behind it*/
+                /* If bullet hits its body and no more body behind it */
                 if(Centipede[i + 1].Clear >= 0 && i + 1 < Length)
                 {
-                    /*If bullet hits its head*/
+                    /* If bullet hits its head */
                     if (i == Centipede[i].head)
                     {
-                        score += 100;//This shoot take 100 points
+                        score += 100;// This shoot take 100 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     else
                     {
-                        score += 10;//This shoot take only 10 points
+                        score += 10;// This shoot take only 10 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     Fire = 0;
                     break;
                 }
-                /*If bullet hits its body and it has bodies behind the shoot one*/
+                /* If bullet hits its body and it has bodies behind the shoot one */
                 if(Centipede[i + 1].Clear < 0 && i + 1 < Length)
                 {
-                    //the centipede splits into two, gaining a new head
+                    // the centipede splits into two, gaining a new head
                     Centipede[i + 1].head = i + 1;
-                    /*If bullet hits its head*/
+                    /* If bullet hits its head */
                     if (i == Centipede[i].head)
                     {
-                        score += 100;//This shoot take 100 points
+                        score += 100;// This shoot take 100 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     else
                     {
-                        score += 10;//This shoot take only 10 points
+                        score += 10;// This shoot take only 10 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     Fire=0;
@@ -1197,7 +1197,7 @@ void end(WINDOW* win, int boundary, PANEL *Pau) {
         interrupt_end = time(NULL);
         wclear(win);
         Fire = 0;
-        /*Reset all the roles, including the lives of mushroom*/
+        /* Reset all the roles, including the lives of mushroom */
         MasterProduce(win);
         Reset_Sea();
         Reset_Spider();
@@ -1254,7 +1254,7 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
     if(count == Length)
     {
         Level += 1;
-        /*I don't want players spend much time on this game, it's enough if they have won 5 times.*/
+        /* I don't want players spend much time on this game, it's enough if they have won 5 times. */
         if(Level == 6)
         {
             getmaxyx(win, y, x);
@@ -1308,7 +1308,7 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
             wrefresh(win);
         }
     }
-    /*If only one segment that has not yet been hit, increase the speed of that one*/
+    /* If only one segment that has not yet been hit, increase the speed of that one */
     else if(count == Length - 1) usleep(SHORT_DELAY);
     else usleep(DELAY);
 }
