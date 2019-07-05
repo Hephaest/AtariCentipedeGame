@@ -670,28 +670,28 @@ void CentipedeMove(int x, int y)
     }
 }
 ```
-## Master Movement
+## 移动的玩家
 
-I use `getch()` funtion to listen keyboard information. However, this is not enough because we need to listen all the time, which means that I couldn’t directly put it because input/output protocol is synchronous. I need to make it asynchronous, hence I use another thread to receive keyboard information. There are few things to discuss, just make sure master cannot rush across the wall, mushroom, ceiling and floor. Here are source code:
+我使用 `getch()` 函数来监听键盘输入. 然而, 在同步 I/O 中监听意味着计算机无法调度程序的其他部分运行. 因此必须使用多线程来监听键盘输入. 这部分没有什么需要探讨的实现原理, 只需要记住玩家是不能穿越游戏窗口的边界和蘑菇的. 以下是源码部分:
 ```C
 /*
- * This function is used to receive key from key board, all the time!
+ * 此功能用于始终从键盘接收玩家输入！
  */
 void * waitForKey() {
     while (1) {
-        usleep(10);//In case of macroblocking
+        usleep(10);//以防宏块
         ch = getch();
     }
 }
 
 /*
- * Key Listener
- * The following operations mainly implement the following requirements:
- * 1. Master could move left, right, up and down.
- * 2. Master could fire by pressing blank space.
- * 3. If master will hit the mushroom, stop it.
- * 4. If master will hit the screen edge, stop it.
- * 5. When a bullet is fired, bullet's position should be where the current master is.
+ * 键盘监听器
+ * 以下操作主要实现以下要求：
+ * 1. 玩家可以上下左右移动.
+ * 2. 玩家按下空格键即可射击.
+ * 3. 如果玩家触碰蘑菇, 玩家暂停移动.
+ * 4. 如果玩家触碰游戏窗口边界, 玩家暂停移动.
+ * 5. 当子弹被触发时, 子弹应从玩家当前位置射出.
  */
 void getOrder(WINDOW *win, int x, int y)
 {
@@ -703,7 +703,7 @@ void getOrder(WINDOW *win, int x, int y)
             {
                 if(master_1_x == 0 || (master_1_y == mushroom[i].y && master_1_x == mushroom[i].x + 1) || (master_2_y == mushroom[i].y && master_2_x == mushroom[i].x + 1) || (master_3_y == mushroom[i].y && master_3_x == mushroom[i].x + 1))//on the  left hand of master
                 {
-                    //do nothing
+                    // 略过
                     skip = 1;
                 }
             }
@@ -723,7 +723,7 @@ void getOrder(WINDOW *win, int x, int y)
                     (master_2_y == mushroom[i].y && master_2_x + 2 == mushroom[i].x - 1) ||
                     (master_3_y == mushroom[i].y && master_3_x + 2 == mushroom[i].x - 1))
                 {
-                    //do nothing
+                    // 略过
                     skip=1;
                 }
             }
@@ -741,7 +741,7 @@ void getOrder(WINDOW *win, int x, int y)
             {
                 if (master_1_y == 0 || (master_1_y == mushroom[i].y + 1 && master_1_x == mushroom[i].x) || (master_1_y == mushroom[i].y + 1 && master_1_x + 1 == mushroom[i].x) || (master_1_y == mushroom[i].y + 1 && master_1_x + 2 == mushroom[i].x))
                 {
-                    //do nothing
+                    // 略过
                     skip=1;
                 }
             }
@@ -759,7 +759,7 @@ void getOrder(WINDOW *win, int x, int y)
             {
                 if (master_3_y == y - 1 || (master_3_y == mushroom[i].y - 1 && master_3_x == mushroom[i].x) || (master_3_y == mushroom[i].y - 1 && master_3_x + 1 == mushroom[i].x) || (master_3_y == mushroom[i].y - 1 && master_3_x + 2 == mushroom[i].x))
                 {
-                    //do nothing
+                    // 略过
                     skip = 1;
                 }
             }
