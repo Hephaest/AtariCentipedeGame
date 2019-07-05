@@ -15,12 +15,12 @@
 #include <menu.h> // To build menu
 #include <time.h>
 
-/*Following #define variables are used to delay pictures*/
+/* Following #define variables are used to delay pictures */
 #define DELAY 80000
 #define SHORT_DELAY 65000
 #define SECOND  1000000
 
-/*Following #define variables are labels to show the attribute of each panel*/
+/* Following #define variables are labels to show the attribute of each panel */
 #define score_line 3
 #define Time 18
 #define level 12
@@ -28,7 +28,7 @@
 #define Continue 12
 #define quit 8
 
-/*Following #define variables are used to show the screen of win or lost or quit*/
+/* Following #define variables are used to show the screen of win or lost or quit */
 #define fake_lost 9
 #define fake_lost_w 35
 #define chance_left 15
@@ -39,22 +39,22 @@
 #define quit_length 35
 #define quit_width 8
 
-/*This is used to describe the length of player*/
+/* This is used to describe the length of player */
 #define master_length 3
 
-/*This is used to calculate the length of menu choices*/
+/* This is used to calculate the length of menu choices */
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
-/*The following variables are used in introduction menu*/
+/* The following variables are used in introduction menu */
 #define box_length 70
 #define box_width 20
 
-/* These choices are used in the introduction menu*/
+/* These choices are used in the introduction menu */
 char *startMenu[] = {
         "Start", "Exit",
 };
 
-/* The main content of the introduction menu*/
+/* The main content of the introduction menu */
 char *readme[] = {
         "*Centipede Game*",
         " ",
@@ -103,14 +103,14 @@ char *readme[] = {
         " ",
 };
 
-/*These choices are used in the quit menu*/
+/* These choices are used in the quit menu */
 char *quitMenu[] = {
         "No",
         "Yes",
         "Replay",
 };
 
-/*This struct is designed for 4 roles: centipede, mushroom,spider and sea monster*/
+/* This struct is designed for 4 roles: centipede, mushroom,spider and sea monster */
 struct point {
     int x;
     int y;
@@ -128,7 +128,7 @@ struct point mushroom[120];
 struct point Spider[3];
 struct point Sea_Monster[2];
 
-/*This struct is used to achieve "Pause" and "Continue" hide*/
+/* This struct is used to achieve "Pause" and "Continue" hide */
 typedef struct PANEL_HIDE {
     int hide;
 }Panel;
@@ -148,19 +148,19 @@ pthread_t work; //Declare a linux thread, master waiting thread
 time_t interrupt_begin,interrupt_end;
 time_t begin,over;
 
-/*Following variables are used to mark the position of player and its bullet, I call player as master*/
+/* Following variables are used to mark the position of player and its bullet, I call player as master */
 int master_1_y, master_2_y, master_3_y;
 int master_1_x, master_2_x, master_3_x;
 int bullet_x, bullet_y, curr_bullet_x, curr_bullet_y;
 
-/*Following variables are used to change the color of 6 roles*/
+/* Following variables are used to change the color of 6 roles */
 int centipede_color, mushroom_color, sea_color, spider_color, master_color, bullet_color;
 
 //To calculate time
 int min,sec;
 double interrupt;
 
-/*Following functions are all the functions that I used*/
+/* Following functions are all the functions that I used */
 void start();
 void Click(char *);
 void GameInterface();
@@ -185,7 +185,7 @@ void SpiderProduce(int,int);
 void Sea_MonsterProduce(int,int);
 void changeColor();
 
-/*This function is the Introduction Menu User Pointer Usage*/
+/* This function is the Introduction Menu User Pointer Usage */
 void start()
 {
     ITEM **start_items;
@@ -220,35 +220,35 @@ void start()
     for(;item < n_readme + n_startMenu; item++)
     {
         start_items[item] = new_item(startMenu[cho], startMenu[cho]);
-        /* Set the user pointer, even in readme*/
+        /* Set the user pointer, even in readme */
         set_item_userptr(start_items[item], Click);
         cho++;
     }
-    /*Set the last one is NULL*/
+    /* Set the last one is NULL */
     start_items[n_readme + n_startMenu] = (ITEM *)NULL;
     /* Crate menu */
     menu = new_menu((ITEM **)start_items);
 
-    /* This color will be used in startMenu's choices*/
+    /* This color will be used in startMenu's choices */
     set_menu_fore(menu, COLOR_PAIR(2));
     set_menu_back(menu, COLOR_PAIR(1));
     set_menu_grey(menu, COLOR_PAIR(1));
     menu_opts_off(menu, O_SHOWDESC);
 
-    /* Create the window and make it at center*/
+    /* Create the window and make it at center */
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
     int x_position = (max_x-box_length)/2;
     int y_position = (max_y-box_width)/2;
     start_menu = newwin(box_width, box_length, y_position, x_position);
-    keypad(start_menu, TRUE);//To listen keyboard
+    keypad(start_menu, TRUE);// To listen keyboard
 
     /* Set main window and sub window */
     set_menu_win(menu, start_menu);
     set_menu_sub(menu, derwin(start_menu, box_width-1, box_length-2, 1, 1));
     set_menu_format(menu, 18, 1);// Set 18 lines inside the box and one choices each line
 
-    /*Create borders around the windows*/
+    /* Create borders around the windows */
     box(start_menu, 0, 0);
     refresh();
 
@@ -271,9 +271,9 @@ void start()
             case KEY_PPAGE:
                 menu_driver(menu, REQ_SCR_UPAGE);
                 break;
-            case 10: /* This is Enter key*/
+            case 10: /* This is Enter key */
             {
-                /*To point to current choice*/
+                /* To point to current choice */
                 ITEM *cur;
                 void (*p)(char *);
                 cur = current_item(menu);
@@ -292,10 +292,10 @@ void start()
     for(int i = 0; i < n_startMenu + n_readme; ++i)
         free_item(start_items[i]);
     free_menu(menu);
-    /*Quit this window and wait for another*/
+    /* Quit this window and wait for another */
     endwin();
 }
-/*Filter choices*/
+/* Filter choices */
 void Click(char *choice)
 {
     if(choice == "Exit")
@@ -311,7 +311,7 @@ void Click(char *choice)
     }
 }
 
-/*This function is used to create game interface*/
+/* This function is used to create game interface */
 void GameInterface()
 {
 
@@ -325,7 +325,7 @@ void GameInterface()
     
     /* Curses initialization */
     initscr();
-    noecho();//don't display input character
+    noecho();// don't display input character
     start_color();
     init_pair(8, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(7, COLOR_CYAN, COLOR_BLACK);
@@ -336,7 +336,7 @@ void GameInterface()
     curs_set(FALSE);
 
     int listener;
-    listener = pthread_create(& work, NULL, waitForKey, NULL);//Create thread for master
+    listener = pthread_create(& work, NULL, waitForKey, NULL);// Create thread for master
     if (listener != 0) {
         exit(1);
     }
@@ -380,11 +380,11 @@ void GameInterface()
 
     /* Show it on the screen */
     doupdate();
-    /*Produce mushrooms, a master and a centipede at first*/
+    /* Produce mushrooms, a master and a centipede at first */
     MushroomProduce(win_6_y,win_6_x-1);
     MasterProduce(my_wins[6]);
     CentipedeProduce(win_6_x);
-    /*If player do not lose all lives, the game will continue. Else, quit*/
+    /* If player do not lose all lives, the game will continue. Else, quit */
     begin = time(NULL);
     while(life > 0)
     {
@@ -542,7 +542,7 @@ void MushroomProduce(int y, int x)
             }
         }
         i++;
-    } while (i < mushLength);/*Until no overlap*/
+    } while (i < mushLength);/* Until no overlap */
     for(int i = 0; i < mushLength; i++) mushroom[i].mush_record=4;
 }
 
@@ -854,7 +854,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_YELLOW);
 
-    /* Create items and menu*/
+    /* Create items and menu */
     n_quitMenu = ARRAY_SIZE(quitMenu);
     my_items = (ITEM **)calloc(n_quitMenu + 1, sizeof(ITEM *));
     for(i = 0; i < n_quitMenu; i++)
@@ -885,7 +885,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
     {
         switch(ch)
         {
-            /*Each time after ch=getch(), we need to give ch a default value. Otherwise, it will report error.*/
+            /* Each time after ch=getch(), we need to give ch a default value. Otherwise, it will report error. */
             case KEY_LEFT:
                 menu_driver(my_menu, REQ_PREV_ITEM);
                 ch = 0;
@@ -894,7 +894,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                 menu_driver(my_menu, REQ_NEXT_ITEM);
                 ch = 0;
                 break;
-            case 10:	/* This is Enter key*/
+            case 10:	/* This is Enter key */
             {
                 if(item_name(current_item(my_menu)) == "Yes")
                 {
@@ -906,7 +906,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                     endwin();
                     exit(0);
                 }
-                /*clear quit menu and return to previous one*/
+                /* clear quit menu and return to previous one */
                 if(item_name(current_item(my_menu)) == "No")
                 {
                     wclear(my_menu_win);
@@ -917,7 +917,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                     ch = 0;
                     break;
                 }
-                /*clear quit menu and into new game*/
+                /* clear quit menu and into new game */
                 if(item_name(current_item(my_menu)) == "Replay")
                 {
                     check = 1;
@@ -949,12 +949,12 @@ void QuitMenu(PANEL *Pau, int x, int y)
  */
 void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
 {
-    /*The bullet hits the mushroom, Mushrooms can be destroyed and disappear only when taking 4 shoots*/
+    /* The bullet hits the mushroom, Mushrooms can be destroyed and disappear only when taking 4 shoots */
     for(int i = 0; i < mushLength; i++) {
         if (bullet_x == mushroom[i].x && bullet_y == mushroom[i].y)
         {
             mushroom[i].mush_record -=1;
-            score += 0;//do nothing
+            score += 0;// do nothing
             mvwprintw(win, 1, 1, "Score: %d", score);
             if (mushroom[i].mush_record == 0) {
                 i++;
@@ -965,13 +965,13 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
                     i++;
                 }
                 mushLength -= 1;
-                score += 1;//If mushroom is destroyed, take 1 point
+                score += 1;// If mushroom is destroyed, take 1 point
                 mvwprintw(win, 1, 1, "Score: %d", score);
             }
             Fire = 0;
         }
     }
-    /*When spider hits mushroom, mushroom will be eaten and disappear*/
+    /* When spider hits mushroom, mushroom will be eaten and disappear */
     for(int i = 0; i < mushLength; i++) {
         if (Spider[1].x == mushroom[i].x && Spider[1].y == mushroom[i].y)
         {
@@ -987,7 +987,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
             mushLength -= 1;
         }
     }
-    /*Once spider, sea monster hits master, master will die*/
+    /* Once spider, sea monster hits master, master will die */
     for(int i = 0; i < 3; i++)
     {
         if((Spider[i].x == master_1_x && Spider[i].y == master_1_y) || (Spider[i].x == master_1_x + 1 && Spider[i].y == master_1_y) || (Spider[i].x==master_1_x+2 && Spider[i].y == master_1_y) || 
@@ -1009,11 +1009,11 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
     }
 
 
-    /*Once bullet hits sea monster or spider, they will be destroyed and disappear*/
+    /* Once bullet hits sea monster or spider, they will be destroyed and disappear */
     for(int i = 0; i < 2; i++) {
         if (bullet_x == Sea_Monster[i].x && bullet_y == Sea_Monster[i].y)
         {
-            score += 600;//This shoot take 600 points bonus
+            score += 600;// This shoot take 600 points bonus
             mvwprintw(win, 1, 1, "Score: %d", score);
             Sea_Monster[0].x = -1;
             Sea_Monster[1].x = -1;
@@ -1025,7 +1025,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
     for(int i = 0; i < 3; i++) {
         if (bullet_x == Spider[i].x && bullet_y == Spider[i].y)
         {
-            score += 600;//This shoot take 600 points bonus
+            score += 600;// This shoot take 600 points bonus
             mvwprintw(win, 1, 1, "Score: %d", score);
             Spider[0].x = -1;
             Spider[1].x = -1;
@@ -1034,51 +1034,51 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
             Fire = 0;
         }
     }
-    /*Once bullet hits centipede, computer need to discuss the situations separately*/
+    /* Once bullet hits centipede, computer need to discuss the situations separately */
     for(int i = 0; i < Length; i++)
     {
         if(bullet_x == Centipede[i].x && bullet_y == Centipede[i].y)
         {
-            /*If the component of centipede has not yet been hit*/
+            /* If the component of centipede has not yet been hit */
             if(Centipede[i].Clear < 0)
             {
-                /*All these situations have common result: the shot segment becomes a mushroom*/
+                /* All these situations have common result: the shot segment becomes a mushroom */
                 mushLength += 1;
                 mushroom[mushLength - 1].x = Centipede[i].x;
                 mushroom[mushLength - 1].y = Centipede[i].y;
                 mushroom[mushLength - 1].mush_record = 4;
                 Centipede[i].Clear = i;
-                /*If bullet hits its body and no more body behind it*/
+                /* If bullet hits its body and no more body behind it */
                 if(Centipede[i + 1].Clear >= 0 && i + 1 < Length)
                 {
-                    /*If bullet hits its head*/
+                    /* If bullet hits its head */
                     if (i == Centipede[i].head)
                     {
-                        score += 100;//This shoot take 100 points
+                        score += 100;// This shoot take 100 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     else
                     {
-                        score += 10;//This shoot take only 10 points
+                        score += 10;// This shoot take only 10 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     Fire = 0;
                     break;
                 }
-                /*If bullet hits its body and it has bodies behind the shoot one*/
+                /* If bullet hits its body and it has bodies behind the shoot one */
                 if(Centipede[i + 1].Clear < 0 && i + 1 < Length)
                 {
-                    //the centipede splits into two, gaining a new head
+                    // The centipede splits into two, gaining a new head
                     Centipede[i + 1].head = i + 1;
-                    /*If bullet hits its head*/
+                    /* If bullet hits its head */
                     if (i == Centipede[i].head)
                     {
-                        score += 100;//This shoot take 100 points
+                        score += 100;// This shoot take 100 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     else
                     {
-                        score += 10;//This shoot take only 10 points
+                        score += 10;// This shoot take only 10 points
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     Fire=0;
@@ -1086,7 +1086,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
                 }
             }
         }
-        /*Once centipede hits master, computer need to discuss the situations separately*/
+        /* Once centipede hits master, computer need to discuss the situations separately */
         if(Centipede[i].Clear<0)
         {
             if((Centipede[i].x == master_1_x && Centipede[i].y == master_1_y) || (Centipede[i].x == master_1_x + 1 && Centipede[i].y == master_1_y) || (Centipede[i].x == master_1_x + 2 && Centipede[i].y == master_1_y) || 
@@ -1135,7 +1135,7 @@ void end(WINDOW* win, int boundary, PANEL *Pau) {
         interrupt_end = time(NULL);
         wclear(win);
         Fire = 0;
-        /*Reset all the roles, including the lives of mushroom*/
+        /* Reset all the roles, including the lives of mushroom */
         MasterProduce(win);
         Reset_Sea();
         Reset_Spider();
@@ -1192,7 +1192,7 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
     if(count == Length)
     {
         Level += 1;
-        /*I don't want players spend much time on this game, it's enough if they have won 5 times.*/
+        /* I don't want players spend much time on this game, it's enough if they have won 5 times. */
         if(Level == 6)
         {
             getmaxyx(win, y, x);
@@ -1246,7 +1246,7 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
             wrefresh(win);
         }
     }
-    /*If only one segment that has not yet been hit, increase the speed of that one*/
+    /* If only one segment that has not yet been hit, increase the speed of that one */
     else if(count == Length - 1) usleep(SHORT_DELAY);
     else usleep(DELAY);
 }
@@ -1298,7 +1298,7 @@ void Reset_Mushroom(WINDOW* win)
         if(mushroom[i].mush_record != 4)
         {
             mushroom[i].mush_record = 4;
-            score += 5;//For each mushroom which needs to reset, give it 5 point
+            score += 5;// For each mushroom which needs to reset, give it 5 point
             mvwprintw(win, 1, 1, "Score: %d", score);
         }
     }
@@ -1310,10 +1310,10 @@ void Reset_Mushroom(WINDOW* win)
 void Reset_Sea()
 {
     Sea_Monster[0].x = -1;
-    sea_appear = 0;//default status
+    sea_appear = 0;// default status
     for(int i = 0; i < 2; i++)
     {
-        Sea_Monster[i].x = -1;//default x position
+        Sea_Monster[i].x = -1;// default x position
     }
 }
 
@@ -1325,10 +1325,10 @@ void Reset_Spider()
     Spider[1].x = -1;
     num = 1;
     delay_spider = 1;
-    spider_appear = 0;//default status
+    spider_appear = 0;// default status
     for(int i = 0; i < 3; i++)
     {
-        Spider[i].x = -1;//default x position
+        Spider[i].x = -1;// default x position
     }
 }
 
@@ -1341,12 +1341,12 @@ void CentipedeMove(int x, int y)
     for(int i = 0; i < Length; i++)
     {
         int skip=0;//This is used to mark
-        /*Computer only moves the position of centipede which has not yet been shot*/
+        /* Computer only moves the position of centipede which has not yet been shot */
         if(Centipede[i].head >=0 && Centipede[i].Clear < 0)
         {
             int j = i;
             int k = i + 1;
-            /*For multiple centipedes, computer recognize their head, and make their own bodies follow them*/
+            /* For multiple centipedes, computer recognize their head, and make their own bodies follow them */
             while(k <= Length - 1 && Centipede[k].head < 0 && Centipede[k].Clear < 0)
             {
                 j++;
@@ -1370,7 +1370,7 @@ void CentipedeMove(int x, int y)
              */
             if (Centipede[i].next_x > x || Centipede[i].next_x < 0)
             {
-                /*For case 1*/
+                /* For case 1 */
                 for(int k = 0; k < Length; k++)
                 {
                     if(Centipede[k].Clear < 0 && (k < i || k > j))
@@ -1385,7 +1385,7 @@ void CentipedeMove(int x, int y)
 
                 for(int j = 0; j < mushLength; j++)
                 {
-                    /*For case 2*/
+                    /* For case 2 */
                     if(Centipede[i].next_y == mushroom[j].y && Centipede[i].x == mushroom[j].x)
                     {
                         Centipede[i].x_direction *= -1;
@@ -1393,21 +1393,21 @@ void CentipedeMove(int x, int y)
                         skip=1;
                         Centipede[i].x += Centipede[i].x_direction;
                     }
-                    /*For case 3*/
+                    /* For case 3 */
                     if(Centipede[i].next_y == mushroom[j].y && Centipede[i].x - 1 == mushroom[j].x || Centipede[i].next_y == mushroom[j].y && Centipede[i].x + 1 == mushroom[j].x)
                     {
                         Centipede[i].y += 1;
                         skip = 1;
                     }
                 }
-                /*For case 4*/
+                /* For case 4 */
                 if (Centipede[i].next_y > y)
                 {
                     Centipede[i].y -= 3;
                     Centipede[i].x_direction *= -1;
                     skip = 1;
                 }
-                /*Default case, just move down and make a turn*/
+                /* Default case, just move down and make a turn */
                 if(!skip)
                 {
                     Centipede[i].x_direction *= -1;
@@ -1424,7 +1424,7 @@ void CentipedeMove(int x, int y)
                 {
                     if(Centipede[i].next_x == mushroom[j].x && Centipede[i].y == mushroom[j].y)
                     {
-                        /*For case 5*/
+                        /* For case 5 */
                         for(int k = 0; k < Length; k++)
                         {
                             if(Centipede[k].Clear < 0 && (k < i || k > j))
@@ -1436,7 +1436,7 @@ void CentipedeMove(int x, int y)
                                 }
                             }
                         }
-                        /*For case 6*/
+                        /* For case 6 */
                         for(int k = 0; k < mushLength; k++)
                         {
                             if(Centipede[i].next_y == mushroom[k].y && Centipede[i].x == mushroom[k].x && j!=k)
@@ -1447,7 +1447,7 @@ void CentipedeMove(int x, int y)
                                 Centipede[i].x += Centipede[i].x_direction;
                             }
                         }
-                        /*Default case, just move down and make a turn*/
+                        /* Default case, just move down and make a turn */
                         if(!skip)
                         {
                             Centipede[i].x_direction *= -1;
@@ -1472,12 +1472,12 @@ void CentipedeMove(int x, int y)
                         }
                      }
                 }
-                /*If not above case happens, just move in x direction*/
+                /* If not above case happens, just move in x direction */
                 if(skip==0) Centipede[i].x += Centipede[i].x_direction;
             }
         }
     }
-    /*While centipedes move, sea monster and spider also have chances to move by random chances*/
+    /* While centipedes move, sea monster and spider also have chances to move by random chances */
     srand(time(NULL));
     int ran_sea = rand() % 10;
     if(ran_sea == 1) sea_appear=1;
@@ -1492,7 +1492,7 @@ void sea_monsterMove(int x)
 {
         Sea_Monster[1].x = Sea_Monster[0].x;
         Sea_Monster[0].next_x = Sea_Monster[0].x + Sea_Monster[0].x_direction;
-        /* If sea monster will hit the wall, make it disappear*/
+        /* If sea monster will hit the wall, make it disappear */
         if (Sea_Monster[0].next_x > x || Sea_Monster[0].next_x < 0)
         {
             Sea_Monster[0].x = -1;
@@ -1517,7 +1517,7 @@ void SpiderMove(int x,int y)
     {
         Spider[j].next_x = Spider[j].x + ran_x*Spider[j].x_direction;
         Spider[j].next_y = Spider[j].y + Spider[j].y_direction;
-        /* If spider will hit the wall, make it disappear and change its initial position*/
+        /* If spider will hit the wall, make it disappear and change its initial position */
         if (Spider[j].next_x > x || Spider[j].next_x < 0)
         {
             Spider[0].x = -1;
@@ -1526,8 +1526,8 @@ void SpiderMove(int x,int y)
             spider_appear = 0;
             num *= -1;
             break;
-        }
-        /* If spider will hit the floor, change its y direction*/
+        } 
+        /* If spider will hit the floor, change its y direction */
         if(Spider[j].next_y > y - 1 || Spider[j].next_y < ran_y)
         {
             Spider[j].y_direction *= -1;
@@ -1537,7 +1537,7 @@ void SpiderMove(int x,int y)
     }
 }
 
-/* Main Function*/
+/* Main Function */
 void main(int argc, char *argv[]) {
     start();
 }
