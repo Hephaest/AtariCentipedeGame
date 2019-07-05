@@ -96,7 +96,7 @@ char *startMenu[] = {
 
 /* The main content of the introduction menu */
 char *readme[] = {
-        "*Centipede Game*",
+       "*Centipede Game*",
         " ",
         "This game is written by Hephaest, Lancaster University.",
         "Before the game, you'd better recognize these following characters.",
@@ -119,13 +119,13 @@ char *readme[] = {
         " ",
         "& Mushroom",
         " ",
-        "This is a barrier, you cannot walk through it unless you destory it.",
-        "Once you destory one of them, you will lost 4 bullets.",
+        "This is a barrier, you cannot walk through it unless you destroy it.",
+        "Once you destroy one of them, you will lose 4 bullets.",
         "Don't worry, you have tons of bullets.",
         " ",
         "_$ Sea monster",
         " ",
-        "This character walks line by line. You can shoot it and get bonus.",
+        "This character walks line by line. You can shoot it and get a bonus.",
         "However, once it hits you, you lose your life.",
         " ",
         "^W^ Spider",
