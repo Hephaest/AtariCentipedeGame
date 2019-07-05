@@ -638,7 +638,7 @@ void CentipedeMove(int x, int y)
                                 Centipede[i].x += Centipede[i].x_direction;
                             }
                         }
-                        /* 默认情况, 只需要下移和嗲头 */
+                        /* 默认情况, 只需要下移和头 */
                         if(!skip)
                         {
                             Centipede[i].x_direction *= -1;
@@ -791,25 +791,25 @@ void getOrder(WINDOW *win, int x, int y)
 }
 ```
 
-## Menu Operation
+## 菜单操作
 
-I create 3 options in game interface. If player press **P** or **p**, this button will dis-appear. All operation are stopped and **Continue** button appears. Inversely, If player press **C** or **c**, this button will disappear. All operation keep working and **Pause** button appears. Besides, player could quit from game whenever they want, just press **Q** or **q** and choose **Yes**.
+我在游戏界面创建了三个选项. 如果玩家按下 **P** 或 **p**, 该按钮将消失. 所有的操作都会被暂停并且 **Continue** 按钮出现. 相反地, 如果玩家按下 **C** 或 **c**, 该按钮将消失. 所有被中断的操作继续并且 **Pause** 按钮出现. 除此之外, 玩家可以随时退出游戏窗口, 只需要按下 **Q** 或者 **q** 并选择 **Yes**.
 
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/screens.png" width = "500"></p>
 
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/quit.png" width = "250"></p>
 
 ```C
-/* This struct is used to achieve "Pause" and "Continue" hide */
+/* 这个结构体为了实现 "Pause" 和 "Continue" 按钮的隐藏 */
 typedef struct PANEL_HIDE {
     int hide;
 }Panel;
 
 /*
- * Key Listener
- * The following operations mainly implement the following requirements:
- * 1. If I press "Continue", then it will disappear but "Pause" appear.
- * 2. If I press "Pause", then it will disappear but "Continue" appear.
+ * 事件监听器
+ * 以下操作主要实现以下要求:
+ * 1. 如果玩家按下 "Continue", 该按钮消失并显示 "Pause" 按钮.
+ * 2. 如果玩家按下 "Pause", 该按钮消失并显示t "Continue" 按钮.
  */
 void getInt(PANEL *Con, PANEL *Pau, int x, int y, WINDOW* win)
 {
@@ -854,12 +854,12 @@ void getInt(PANEL *Con, PANEL *Pau, int x, int y, WINDOW* win)
 }
 
 /*
- * Quit Menu
- * The following operations mainly implement the following requirements:
- * 1. Create a window that could cover the previous one.
- * 2. However, after clicking "No", the current window disappears and previous windows continue work.
- * 3. If I choose "Yes", end all windows and return to terminal.
- * 4. Otherwise, I could replay the game.
+ * 退出菜单
+ * 以下操作主要实现以下要求:
+ * 1. 创建一个新窗口并覆盖原来的窗口.
+ * 2. 然而, 如果玩家点击 "No", 当前窗口消失并使原来的窗口浮现.
+ * 3. 如果玩家点击 "Yes", 关闭所有的窗口并结束游戏进程.
+ * 4. 否则, 玩家仍可以继续玩游戏.
  */
 void QuitMenu(PANEL *Pau, int x, int y)
 {
@@ -869,7 +869,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
     Panel *temp;
     int n_quitMenu, i;
 
-    /* Curses initialization */
+    /* Curses 初始化 */
     initscr();
     start_color();
     cbreak();
@@ -878,7 +878,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_YELLOW);
 
-    /* Create items and menu*/
+    /* 创建菜单和选项 */
     n_quitMenu = ARRAY_SIZE(quitMenu);
     my_items = (ITEM **)calloc(n_quitMenu + 1, sizeof(ITEM *));
     for(i = 0; i < n_quitMenu; i++)
@@ -886,14 +886,14 @@ void QuitMenu(PANEL *Pau, int x, int y)
     my_items[n_quitMenu] = (ITEM *)NULL;
     my_menu = new_menu(my_items);
 
-    /* Make quit window at center */
+    /* 使窗口位于正中央 */
     menu_opts_off(my_menu, O_SHOWDESC);
     int lent=(x-quit_length) / 2;
     int widt=(y-quit_width) / 2;
     my_menu_win = newwin(8, 35, widt, lent);
     keypad(my_menu_win, TRUE);
 
-    /* Set main window and suitable sub window */
+    /* 设置主窗口和子窗口 */
     set_menu_win(my_menu, my_menu_win);
     set_menu_sub(my_menu, derwin(my_menu_win,2, 26, 4, 6));
     set_menu_format(my_menu, 1, 3);
@@ -909,7 +909,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
     {
         switch(ch)
         {
-            /*Each time after ch=getch(), we need to give ch a default value. Otherwise, it will report error.*/
+            /* 每一次 ch = getch()后, 需要给 ch 一个初始值. 否则, 报告错误. */
             case KEY_LEFT:
                 menu_driver(my_menu, REQ_PREV_ITEM);
                 ch = 0;
@@ -918,7 +918,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                 menu_driver(my_menu, REQ_NEXT_ITEM);
                 ch = 0;
                 break;
-            case 10:	/* This is Enter key*/
+            case 10:	/* 这是 Enter 键 */
             {
                 if(item_name(current_item(my_menu)) == "Yes")
                 {
@@ -930,7 +930,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                     endwin();
                     exit(0);
                 }
-                /*clear quit menu and return to previous one*/
+                /* 清空退出菜单并返回游戏 */
                 if(item_name(current_item(my_menu)) == "No")
                 {
                     wclear(my_menu_win);
@@ -941,7 +941,7 @@ void QuitMenu(PANEL *Pau, int x, int y)
                     ch = 0;
                     break;
                 }
-                /*clear quit menu and into new game*/
+                /* 清空退出菜单并重新开始游戏 */
                 if(item_name(current_item(my_menu)) == "Replay")
                 {
                     check = 1;
@@ -966,31 +966,31 @@ void QuitMenu(PANEL *Pau, int x, int y)
 }
 ```
 ## Collision Problem
-I divide collision problems as 2 parts. The first part is that bullet hits enemies: one bullet could make spider, sea monster and one part of centipede die but mush-room needs 4 bullets. However, some situations shooting centipede could gain higher score but sometimes not. What’s more, centipede sometimes could be tricky by gaining new heads, I have listed all the situations about centipede that I could image in below. If master shoot all parts of centipede successfully, then it will go into next level.
+我把碰撞问题分成2部分. 第一部分是子弹射中敌人: 对于蜘蛛和蝎子只需要一个子弹就够了, 蜈蚣的单个身节也只需要一个但蘑菇需要4枚子弹才能完全消除. 然而, 射中蜈蚣不同位置获得的奖励分数也不同. 另外, 蜈蚣被击中的部位可能会长出新的头部, 我已把所有我能想到的情况罗列在下方. 如果玩家把蜈蚣全部身节都射中了, 玩家就能成功进入下一关.
 
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/coli.png" width = "400"></p>
 
-The second part is that once enemies hit master (player), master will lose one life until master doesn’t have any life then game over. After being hitting, if master still has one more lives, player could play this level again, however, each mush-room has 4 lives, including which has being hit. All enemies return to their initial position waiting for orders.
+第二部分是敌人成功击中玩家, 玩家会失去一次生命当没有多余的生命之后宣告玩家游戏失败. 在被击中后, 如果玩家还有多余的生命, 玩家可以选择重新挑战, 然而, 每一个蘑菇需要4枚子弹才能消除. 所有的敌人将从初始位置重新出现.
 
-You might have a question about how I achieve multiple centipede after splitting and make them move in the same rule. Well, I define an int type `Clear` in struct so that I could trace all nodes of the original centipede. For example, if I shoot the ith node of it, I record this node by writing `i` into `Centipede[i]`.Clear, the original Clear value of its bodies are both -1. After that, we need to traverse all centipedes whose Clear value is `-1` and head value is greater than or equal to `0` (which means they have not yet been shot and they are the first node of each centipede). I don’t care about the rest bodies of each centipede, if they have not yet been shot, I will make them follow their heads.
+您可能会好奇如何实现蜈蚣一分为二的. 其实, 只需要在结构体里定义一个整型 `Clear` 就可以追踪蜈蚣的每个身节. 比如, 玩家射中第 `ith` 个身节, 只需要将此位置 `Centipede[i]` 记录它的状态. 清除, 所有身节的初始清除状态值都是 -1. 在这之后, 遍历所有清除值 `-1` 的身节并使头部的清除值大于或等于 `0` (这意味着头部没有被射中并且它们是蜈蚣的第一个身节). 我不需要关系其他身节清除值的变化, 在移动中只需要让它们跟从头节点变化即可.
 
 <p align="center"><img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/clear.png" width = "400"></p>
 
 ```C
 /*
- * CollisionCheck
- * The following operations mainly aim to implement the following requirements:
- * 1. Once bullet hits object, computer needs to calculate score and check whether to keep it.
- * 2. Once object hits master, computer announces the death of player and consider whether to resurrect.
+ * 碰撞检验
+ * 以下操作主要旨在实现以下要求：
+ * 1. 一旦子弹射中目标, 程序需要计算分数并确认是否使其消失.
+ * 2. 一旦敌人攻击到玩家, 程序判定玩家当此游戏失败并确认玩家是否还有多余的生命.
  */
 void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
 {
-    /*The bullet hits the mushroom, Mushrooms can be destroyed and disappear only when taking 4 shoots*/
+    /* 子弹射中蘑菇, 蘑菇只有经受4次子弹攻击才会被销毁 */
     for(int i = 0; i < mushLength; i++) {
         if (bullet_x == mushroom[i].x && bullet_y == mushroom[i].y)
         {
             mushroom[i].mush_record -=1;
-            score += 0;//do nothing
+            score += 0;// 略过
             mvwprintw(win, 1, 1, "Score: %d", score);
             if (mushroom[i].mush_record == 0) {
                 i++;
@@ -1001,13 +1001,13 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
                     i++;
                 }
                 mushLength -= 1;
-                score += 1;//If mushroom is destroyed, take 1 point
+                score += 1;// 如果蘑菇被销毁，获得1分奖励
                 mvwprintw(win, 1, 1, "Score: %d", score);
             }
             Fire = 0;
         }
     }
-    /*When spider hits mushroom, mushroom will be eaten and disappear*/
+    /* 当蜘蛛碰到蘑菇, 蘑菇被蜘蛛吃掉 */
     for(int i = 0; i < mushLength; i++) {
         if (Spider[1].x == mushroom[i].x && Spider[1].y == mushroom[i].y)
         {
@@ -1023,7 +1023,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
             mushLength -= 1;
         }
     }
-    /*Once spider, sea monster hits master, master will die*/
+    /* 一旦蜘蛛或蝎子碰到玩家, 玩家死亡 */
     for(int i = 0; i < 3; i++)
     {
         if((Spider[i].x == master_1_x && Spider[i].y == master_1_y) || (Spider[i].x == master_1_x + 1 && Spider[i].y == master_1_y) || (Spider[i].x==master_1_x+2 && Spider[i].y == master_1_y) || 
@@ -1045,11 +1045,11 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
     }
 
 
-    /*Once bullet hits sea monster or spider, they will be destroyed and disappear*/
+    /* 一旦子弹射中蜘蛛或蝎子, 它们被立即消灭*/
     for(int i = 0; i < 2; i++) {
         if (bullet_x == Sea_Monster[i].x && bullet_y == Sea_Monster[i].y)
         {
-            score += 600;//This shoot take 600 points bonus
+            score += 600;// 当此射击获得600分奖励
             mvwprintw(win, 1, 1, "Score: %d", score);
             Sea_Monster[0].x = -1;
             Sea_Monster[1].x = -1;
@@ -1061,7 +1061,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
     for(int i = 0; i < 3; i++) {
         if (bullet_x == Spider[i].x && bullet_y == Spider[i].y)
         {
-            score += 600;//This shoot take 600 points bonus
+            score += 600;// 当此射击获得600分奖励
             mvwprintw(win, 1, 1, "Score: %d", score);
             Spider[0].x = -1;
             Spider[1].x = -1;
@@ -1070,51 +1070,51 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
             Fire = 0;
         }
     }
-    /*Once bullet hits centipede, computer need to discuss the situations separately*/
+    /* 一旦子弹打中蜈蚣, 程序应对打中情况分类讨论 */
     for(int i = 0; i < Length; i++)
     {
         if(bullet_x == Centipede[i].x && bullet_y == Centipede[i].y)
         {
-            /*If the component of centipede has not yet been hit*/
+            /* 如果打中的部位没有任何标记 */
             if(Centipede[i].Clear < 0)
             {
-                /*All these situations have common result: the shot segment becomes a mushroom*/
+                /* 所有下述情况都有一个共同结果: 打中身节变成蘑菇 */
                 mushLength += 1;
                 mushroom[mushLength - 1].x = Centipede[i].x;
                 mushroom[mushLength - 1].y = Centipede[i].y;
                 mushroom[mushLength - 1].mush_record = 4;
                 Centipede[i].Clear = i;
-                /*If bullet hits its body and no more body behind it*/
+                /* 如果打中的身节是尾身节 */
                 if(Centipede[i + 1].Clear >= 0 && i + 1 < Length)
                 {
-                    /*If bullet hits its head*/
+                    /* 如果打中的是头部 */
                     if (i == Centipede[i].head)
                     {
-                        score += 100;//This shoot take 100 points
+                        score += 100;// 当此射击获得100分奖励
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     else
                     {
-                        score += 10;//This shoot take only 10 points
+                        score += 10;// 当此射击获得10分奖励
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     Fire = 0;
                     break;
                 }
-                /*If bullet hits its body and it has bodies behind the shoot one*/
+                /* 如果打中的身节不是尾身节 */
                 if(Centipede[i + 1].Clear < 0 && i + 1 < Length)
                 {
-                    //the centipede splits into two, gaining a new head
+                    // 蜈蚣分裂成两个, 并长出新的头部
                     Centipede[i + 1].head = i + 1;
-                    /*If bullet hits its head*/
+                    /* 如果打中的是头部 */
                     if (i == Centipede[i].head)
                     {
-                        score += 100;//This shoot take 100 points
+                        score += 100;// 当此射击获得100分奖励
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     else
                     {
-                        score += 10;//This shoot take only 10 points
+                        score += 10;// 当此射击获得10分奖励
                         mvwprintw(win, 1, 1, "Score: %d",score);
                     }
                     Fire=0;
@@ -1122,7 +1122,7 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
                 }
             }
         }
-        /*Once centipede hits master, computer need to discuss the situations separately*/
+        /* 一旦蜈蚣击中玩家, 程序应对打中情况分类讨论 */
         if(Centipede[i].Clear<0)
         {
             if((Centipede[i].x == master_1_x && Centipede[i].y == master_1_y) || (Centipede[i].x == master_1_x + 1 && Centipede[i].y == master_1_y) || (Centipede[i].x == master_1_x + 2 && Centipede[i].y == master_1_y) || 
@@ -1136,10 +1136,10 @@ void CollisionCheck(WINDOW *win,WINDOW *win0,int boundary,PANEL *Pau)
 }
 
 /*
- * This function is used to divide player's death into 2 situation
- * The following operations mainly aim to implement the following requirements:
- * 1. Once players lose their lives, they have choices to play this level again.
- * 2. However, if players use all of their lives, they will lost.
+ * 此函数将玩家的死亡分类成两种情况.
+ * 以下操作主要旨在实现以下要求:
+ * 1. 一旦玩家失去生命, 他们有权选择是否重试一遍.
+ * 2. 然而, 一旦玩家失去所有生命, 宣告玩家挑战失败.
  */
 void end(WINDOW* win, int boundary, PANEL *Pau) {
     int x;
@@ -1171,7 +1171,7 @@ void end(WINDOW* win, int boundary, PANEL *Pau) {
         interrupt_end = time(NULL);
         wclear(win);
         Fire = 0;
-        /*Reset all the roles, including the lives of mushroom*/
+        /* 重启所有角色, 包括新生成的蘑菇 */
         MasterProduce(win);
         Reset_Sea();
         Reset_Spider();
@@ -1207,10 +1207,10 @@ void end(WINDOW* win, int boundary, PANEL *Pau) {
 }
 
 /*
- * This function is used to check whether player shoots all components of centipede or not
- * The following operations mainly aim to implement the following requirements:
- * 1. Each time the player successfully shoot centipede, computer counts the shot number.
- * 2. If the number is equal to the length of centipede, enter to next level. Else, ignore it.
+ * 该函数用于检验玩家是否消灭了蜈蚣所有的身节.
+ * 以下操作主要旨在实现以下要求:
+ * 1. 每当玩家成功击中蜈蚣, 程序记录击中的次数.
+ * 2. 如果击中次数等于蜈蚣总长, 恭喜玩家进入下一关. 否则, 不发生任何变动.
  */
 int success(WINDOW* win,int boundary,PANEL *Pau)
 {
@@ -1228,7 +1228,7 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
     if(count == Length)
     {
         Level += 1;
-        /*I don't want players spend much time on this game, it's enough if they have won 5 times.*/
+        /* 总共只有5个关卡. */
         if(Level == 6)
         {
             getmaxyx(win, y, x);
@@ -1269,8 +1269,8 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
             }
             interrupt_end = time(NULL);
             /*
-             * If play wins, change color of roles and increase the length of centipede
-             * Reset the position of roles
+             * 如果玩家挑战成功, 更改所有角色的颜色并增长蜈蚣长度.
+             * 重新设置所有角色的初始位置.
              */
             wclear(win);
             Fire = 0;
@@ -1282,7 +1282,7 @@ int success(WINDOW* win,int boundary,PANEL *Pau)
             wrefresh(win);
         }
     }
-    /*If only one segment that has not yet been hit, increase the speed of that one*/
+    /* 如果只剩下最后一个身节未被击中, 加速蜈蚣运行的速度 */
     else if(count == Length - 1) usleep(SHORT_DELAY);
     else usleep(DELAY);
 }
