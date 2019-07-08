@@ -23,6 +23,7 @@ Table of Contents
 
 English | [中文](README_CN.md)
 
+Last updated on `2019/07/08`<br>
 <p align=center>
 <img src="https://github.com/Hephaest/AtariCentipedeGame/blob/master/images/Level2-demo.gif"/>
 </p>
