@@ -20,7 +20,6 @@ Table of Contents
 #  C 语言实现Atari经典街机游戏《飞天蜈蚣》
 
 [![LICENSE](https://img.shields.io/cocoapods/l/AFNetworking.svg)](https://github.com/Hephaest/AtariCentipedeGame/blob/master/LICENSE)
-[![OS](https://img.shields.io/badge/OS-Ubuntu16.04-lightgrey.svg)](http://releases.ubuntu.com/16.04/)
 
 [English](README.md) | 中文
 
